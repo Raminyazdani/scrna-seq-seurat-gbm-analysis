@@ -1,0 +1,11 @@
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(init): Initial repository setup
+
+Created the foundational repository structure for the single-cell RNA sequencing analysis project. This includes:
+- Basic README.md describing the project scope
+- Standard .gitignore configured for R projects (excluding .Rdata, .Rhistory, etc.)
+- GitHub issue templates in .github/ directory for structured collaboration
+- Data directory placeholder for future GEO dataset downloads
+
+This establishes the minimal viable structure needed to begin development of the scRNA-seq pipeline. The repository is now ready to accept code contributions.
+
+Verification: Confirmed all files created successfully, .gitignore properly configured for R environment.
