@@ -1,11 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(init): Initial repository setup
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(setup): Create package installation helper
 
-Created the foundational repository structure for the single-cell RNA sequencing analysis project. This includes:
-- Basic README.md describing the project scope
-- Standard .gitignore configured for R projects (excluding .Rdata, .Rhistory, etc.)
-- GitHub issue templates in .github/ directory for structured collaboration
-- Data directory placeholder for future GEO dataset downloads
+Created the install_if_missing() helper function to manage automatic package installation:
+- Supports both CRAN and Bioconductor sources
+- Checks if package is already installed before attempting installation
+- Automatically installs BiocManager when needed for Bioconductor packages
+- Returns silently if package is already available
 
-This establishes the minimal viable structure needed to begin development of the scRNA-seq pipeline. The repository is now ready to accept code contributions.
+This helper will be used throughout the pipeline to ensure all dependencies are met without manual intervention. Makes the pipeline more portable and user-friendly.
 
-Verification: Confirmed all files created successfully, .gitignore properly configured for R environment.
+Verification: Function definition is syntactically correct, ready to be used for package management.
