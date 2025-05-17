@@ -16,3 +16,14 @@ install_if_missing <- function(package_name, source = "CRAN") {
 rm(list = ls())
 
 message("Package installation helper created")
+
+# Install core packages
+install_if_missing("Seurat", "CRAN")
+install_if_missing("dplyr", "CRAN")  
+install_if_missing("ggplot2", "CRAN")
+
+library(Seurat)
+library(dplyr)
+library(ggplot2)
+
+message("Core packages loaded successfully")
