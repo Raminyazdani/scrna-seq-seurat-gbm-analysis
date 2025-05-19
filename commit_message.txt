@@ -1,10 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(packages): Install core analysis packages
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(packages): Add Bioconductor support
 
-Added installation and loading of core packages:
-- Seurat: Primary toolkit for single-cell analysis
-- dplyr: Data manipulation and transformation
-- ggplot2: Publication-quality visualization
+Extended package management to support Bioconductor packages:
+- Enhanced install_if_missing() to handle both CRAN and Bioconductor sources
+- Added BiocManager installation as prerequisite
+- Included GEOquery for GEO data downloads
+- Included SingleCellExperiment and scDblFinder for scRNA-seq analysis
 
-Using the install_if_missing() helper ensures these packages are automatically installed if not present. These form the foundation for all downstream single-cell analysis operations.
+This maintains the established pattern of automatic dependency installation while expanding to the Bioconductor ecosystem essential for single-cell analysis.
 
-Verification: Packages install correctly on fresh R session, library loading succeeds without errors.
+Verification: Confirmed BiocManager installs correctly, Bioconductor packages download and install successfully.
