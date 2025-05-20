@@ -1,11 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(packages): Add Bioconductor support
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(data): Download GEO dataset
 
-Extended package management to support Bioconductor packages:
-- Enhanced install_if_missing() to handle both CRAN and Bioconductor sources
-- Added BiocManager installation as prerequisite
-- Included GEOquery for GEO data downloads
-- Included SingleCellExperiment and scDblFinder for scRNA-seq analysis
+Implemented GEO data download functionality:
+- Added GEOquery package for accessing Gene Expression Omnibus
+- Configured download for GSE75688 (breast cancer scRNA-seq dataset)
+- Stored GEO series object for metadata access
 
-This maintains the established pattern of automatic dependency installation while expanding to the Bioconductor ecosystem essential for single-cell analysis.
+This establishes the data acquisition pipeline. The dataset will be cached locally for future runs, avoiding repeated downloads.
 
-Verification: Confirmed BiocManager installs correctly, Bioconductor packages download and install successfully.
+Verification: GEO download succeeds, dataset object created successfully.

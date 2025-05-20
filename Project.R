@@ -32,3 +32,10 @@ for (pkg in bioc_packages) {
 }
 
 message("Package installation complete!")
+
+# Download data from GEO
+install_if_missing("GEOquery", "Bioconductor")
+library(GEOquery)
+
+gse <- getGEO("GSE75688", GSEMatrix = FALSE)
+message("GEO dataset downloaded")
