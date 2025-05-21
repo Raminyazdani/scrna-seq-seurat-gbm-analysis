@@ -1,48 +1,42 @@
-# Single-Cell RNA-Seq Analysis Pipeline
-# Step 02: Package Management and Installation
-
-# Clean environment
-rm(list = ls())
-
-# Function to install packages if missing
+# Helper function for package installation
 install_if_missing <- function(package_name, source = "CRAN") {
-  if (!require(package_name, character.only = TRUE, quietly = TRUE)) {
-    message(paste("Installing", package_name, "from", source))
+  if (!requireNamespace(package_name, quietly = TRUE)) {
     if (source == "Bioconductor") {
-      if (!requireNamespace("BiocManager", quietly = TRUE))
+      if (!requireNamespace("BiocManager", quietly = TRUE)) {
         install.packages("BiocManager")
-      BiocManager::install(package_name, update = FALSE)
+      }
+      BiocManager::install(package_name)
     } else {
-      install.packages(package_name, dependencies = TRUE)
+      install.packages(package_name)
     }
-    library(package_name, character.only = TRUE)
   }
 }
 
-# Install required CRAN packages
-cran_packages <- c("dplyr", "tidyverse", "ggplot2", "patchwork", "cowplot")
-for (pkg in cran_packages) {
-  install_if_missing(pkg, "CRAN")
-}
+rm(list = ls())
 
-# Install required Bioconductor packages
-bioc_packages <- c("GEOquery", "Seurat", "SingleCellExperiment")
-for (pkg in bioc_packages) {
-  install_if_missing(pkg, "Bioconductor")
-}
-
-message("Package installation complete!")
-
-# Download data from GEO
+# Core packages
+install_if_missing("Seurat", "CRAN")
+install_if_missing("dplyr", "CRAN")
+install_if_missing("ggplot2", "CRAN")
 install_if_missing("GEOquery", "Bioconductor")
+
+library(Seurat)
+library(dplyr)
+library(ggplot2)
 library(GEOquery)
 
+# Download and load data
 gse <- getGEO("GSE75688", GSEMatrix = FALSE)
-message("GEO dataset downloaded")
 
-# Parse expression data
+# FIXED: Check if file exists and create directory if needed
+if (!dir.exists("data")) {
+  dir.create("data")
+}
+
 expr_file <- "data/GSE75688_GEO_processed_Breast_Cancer_raw_TPM_matrix.txt"
-expr_data <- read.table(expr_file, header = TRUE, row.names = 1)
+if (!file.exists(expr_file)) {
+  stop("Expression matrix file not found. Please download from GEO.")
+}
 
-# BUG: Not checking if file exists first
-message("Expression data loaded")
+expr_data <- read.table(expr_file, header = TRUE, row.names = 1)
+message("Expression data loaded successfully")
