@@ -1,10 +1,9 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(data): Download GEO dataset
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(data): Parse expression matrix
 
-Implemented GEO data download functionality:
-- Added GEOquery package for accessing Gene Expression Omnibus
-- Configured download for GSE75688 (breast cancer scRNA-seq dataset)
-- Stored GEO series object for metadata access
+Added expression matrix parsing:
+- Read TPM expression matrix from downloaded file
+- Set genes as row names, cells as columns
 
-This establishes the data acquisition pipeline. The dataset will be cached locally for future runs, avoiding repeated downloads.
+BUG INTRODUCED: Not checking if file exists before attempting to read. This will cause cryptic error on first run or if data/ directory is missing.
 
-Verification: GEO download succeeds, dataset object created successfully.
+Status: BROKEN - Will require hotfix in next step.

@@ -39,3 +39,10 @@ library(GEOquery)
 
 gse <- getGEO("GSE75688", GSEMatrix = FALSE)
 message("GEO dataset downloaded")
+
+# Parse expression data
+expr_file <- "data/GSE75688_GEO_processed_Breast_Cancer_raw_TPM_matrix.txt"
+expr_data <- read.table(expr_file, header = TRUE, row.names = 1)
+
+# BUG: Not checking if file exists first
+message("Expression data loaded")
