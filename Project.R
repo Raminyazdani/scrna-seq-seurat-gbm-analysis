@@ -50,3 +50,15 @@ message("Seurat object created")
 seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
 seurat_obj[["percent.ribo"]] <- PercentageFeatureSet(seurat_obj, pattern = "^RP[SL]")
 message("QC metrics calculated: percent.mt, percent.ribo, nCount_RNA, nFeature_RNA")
+
+# Visualize QC metrics
+VlnPlot(seurat_obj, features = c("nFeature_RNA", "nCount_RNA", "percent.mt", "percent.ribo"))
+
+# IQR-based filtering
+lower_nFeature <- quantile(seurat_obj$nFeature_RNA, 0.25) - 1.5 * IQR(seurat_obj$nFeature_RNA)
+upper_nFeature <- quantile(seurat_obj$nFeature_RNA, 0.75) + 1.5 * IQR(seurat_obj$nFeature_RNA)
+
+seurat_obj <- subset(seurat_obj, 
+                     subset = nFeature_RNA > lower_nFeature & 
+                             nFeature_RNA < upper_nFeature)
+message("IQR filtering applied")

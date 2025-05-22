@@ -1,11 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Calculate quality control metrics
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Add QC visualization and IQR filtering
 
-Implemented comprehensive QC metric calculation:
-- percent.mt: Mitochondrial gene expression percentage (cell stress indicator)
-- percent.ribo: Ribosomal gene expression percentage
-- nCount_RNA: Total UMI counts per cell (automatically calculated)
-- nFeature_RNA: Number of unique genes detected per cell (automatically calculated)
+Implemented QC visualization and statistical filtering:
+- Created violin plots showing distribution of all QC metrics
+- Applied IQR (Interquartile Range) method for outlier detection
+- Filtered cells with extreme nFeature_RNA values (too high or too low)
 
-These metrics help identify low-quality cells: high mitochondrial content suggests dying cells, low UMI/gene counts indicate poor capture efficiency or empty droplets.
+IQR filtering removes statistical outliers: Q1 - 1.5×IQR for lower bound, Q3 + 1.5×IQR for upper bound. This is robust to non-normal distributions common in scRNA-seq data.
 
-Verification: All metrics calculated successfully, value ranges are biologically plausible.
+Verification: Visualizations show clear distribution patterns, filtering removes appropriate outliers while preserving main population.
