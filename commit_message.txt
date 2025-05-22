@@ -1,10 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Create Seurat object
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Calculate quality control metrics
 
-Created the primary Seurat object for analysis:
-- Initialized with expression counts matrix
-- Set project name for tracking
-- Object now contains cells (columns) and genes (rows)
+Implemented comprehensive QC metric calculation:
+- percent.mt: Mitochondrial gene expression percentage (cell stress indicator)
+- percent.ribo: Ribosomal gene expression percentage
+- nCount_RNA: Total UMI counts per cell (automatically calculated)
+- nFeature_RNA: Number of unique genes detected per cell (automatically calculated)
 
-The Seurat object is the central data structure that will hold all downstream analysis results including QC metrics, normalization, dimensionality reduction, and clustering.
+These metrics help identify low-quality cells: high mitochondrial content suggests dying cells, low UMI/gene counts indicate poor capture efficiency or empty droplets.
 
-Verification: Object creation succeeds, contains expected number of cells and genes.
+Verification: All metrics calculated successfully, value ranges are biologically plausible.

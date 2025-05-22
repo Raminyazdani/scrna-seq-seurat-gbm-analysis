@@ -45,3 +45,8 @@ message("Expression data loaded successfully")
 seurat_obj <- CreateSeuratObject(counts = expr_data, 
                                   project = "scRNA_analysis")
 message("Seurat object created")
+
+# Calculate QC metrics
+seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
+seurat_obj[["percent.ribo"]] <- PercentageFeatureSet(seurat_obj, pattern = "^RP[SL]")
+message("QC metrics calculated: percent.mt, percent.ribo, nCount_RNA, nFeature_RNA")
