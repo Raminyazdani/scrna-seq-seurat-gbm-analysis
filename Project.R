@@ -40,3 +40,8 @@ if (!file.exists(expr_file)) {
 
 expr_data <- read.table(expr_file, header = TRUE, row.names = 1)
 message("Expression data loaded successfully")
+
+# Create Seurat object
+seurat_obj <- CreateSeuratObject(counts = expr_data, 
+                                  project = "scRNA_analysis")
+message("Seurat object created")
