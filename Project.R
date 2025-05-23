@@ -62,3 +62,11 @@ seurat_obj <- subset(seurat_obj,
                      subset = nFeature_RNA > lower_nFeature & 
                              nFeature_RNA < upper_nFeature)
 message("IQR filtering applied")
+
+# MAD-based filtering for mitochondrial content
+median_mt <- median(seurat_obj$percent.mt)
+mad_mt <- mad(seurat_obj$percent.mt)
+upper_mt <- median_mt + 3 * mad_mt
+
+seurat_obj <- subset(seurat_obj, subset = percent.mt < upper_mt)
+message("MAD filtering applied for mitochondrial content")

@@ -1,10 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Add QC visualization and IQR filtering
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Add MAD filtering for mitochondrial content
 
-Implemented QC visualization and statistical filtering:
-- Created violin plots showing distribution of all QC metrics
-- Applied IQR (Interquartile Range) method for outlier detection
-- Filtered cells with extreme nFeature_RNA values (too high or too low)
+Added Median Absolute Deviation (MAD) filtering:
+- Calculated median and MAD for mitochondrial percentage
+- Set threshold at median + 3×MAD
+- Filtered cells exceeding mitochondrial content threshold
 
-IQR filtering removes statistical outliers: Q1 - 1.5×IQR for lower bound, Q3 + 1.5×IQR for upper bound. This is robust to non-normal distributions common in scRNA-seq data.
+MAD is more robust than standard deviation for outlier detection, especially with skewed distributions. High mitochondrial content typically indicates stressed or dying cells that should be removed.
 
-Verification: Visualizations show clear distribution patterns, filtering removes appropriate outliers while preserving main population.
+Verification: Filtering removes high-mitochondrial cells while preserving healthy cell population, MAD threshold is biologically appropriate.
