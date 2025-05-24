@@ -70,3 +70,8 @@ upper_mt <- median_mt + 3 * mad_mt
 
 seurat_obj <- subset(seurat_obj, subset = percent.mt < upper_mt)
 message("MAD filtering applied for mitochondrial content")
+
+# Create scatter plots showing relationships
+FeatureScatter(seurat_obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+FeatureScatter(seurat_obj, feature1 = "nCount_RNA", feature2 = "percent.mt")
+message("QC filtering complete")
