@@ -1,9 +1,12 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(qc): Add QC relationship scatter plots
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(doublets): Implement doublet detection
 
-Created correlation scatter plots for QC metrics:
-- nCount_RNA vs nFeature_RNA: Shows expected positive correlation
-- nCount_RNA vs percent.mt: Helps identify mitochondrial contamination patterns
+Added doublet detection to remove technical artifacts:
+- Integrated scDblFinder algorithm for computational doublet detection
+- Converted Seurat object to SingleCellExperiment format for compatibility
+- Identified and marked doublet cells
+- Removed doublets from the dataset
+- Generated visualizations showing doublet scores and classifications
 
-These plots reveal relationships between metrics and help validate filtering decisions. High-quality cells show strong nCount/nFeature correlation with low mitochondrial content.
+Doublets (two cells captured as one) are common technical artifacts in droplet-based scRNA-seq. Removing them prevents spurious "intermediate" cell types in downstream clustering.
 
-Verification: Scatter plots show expected patterns, filtered dataset contains high-quality cells.
+Verification: Confirmed doublet detection runs successfully, reasonable doublet rate (~5-10%), visualization shows clear separation between singlets and doublets.

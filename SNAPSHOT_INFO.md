@@ -1,10 +1,10 @@
-# Snapshot Info: Step 03
+# Snapshot Info: Step 07
 
-**Commit:** Added Bioconductor and specialized packages
+**Commit:** Doublet detection implementation
 
 **Changes:**
-- Extended package list to include GEOquery, SingleCellExperiment, scDblFinder
-- Added Bioconductor package installation support
-- Expanded install_if_missing to handle both CRAN and Bioconductor
+- Added scDblFinder for doublet detection
+- Identified and removed doublets from dataset
+- Generated doublet detection visualizations
 
-**Status:** Package management complete
+**Status:** Doublet detection complete
