@@ -71,3 +71,14 @@ library(SingleCellExperiment)
 # sce <- scDblFinder(sce)
 
 message("Doublet detection complete")
+
+# Normalization with SCTransform
+# BUG: Attempting to use sctransform without installing it first
+library(sctransform)  # This will fail if package not installed!
+library(glmGamPoi)    # This will also fail!
+
+seurat_obj <- SCTransform(seurat_obj, method = "glmGamPoi", 
+                          vars.to.regress = "percent.mt", 
+                          verbose = FALSE)
+
+message("Normalization complete")

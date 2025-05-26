@@ -1,10 +1,11 @@
-# Snapshot Info: Step 07
+# Snapshot Info: Step 08
 
-**Commit:** Doublet detection implementation
+**Commit:** Add normalization (WITH BUG)
 
 **Changes:**
-- Added scDblFinder for doublet detection
-- Identified and removed doublets from dataset
-- Generated doublet detection visualizations
+- Added SCTransform normalization
+- Configured glmGamPoi backend
+- **BUG:** Used library(sctransform) and library(glmGamPoi) without install_if_missing()
 
-**Status:** Doublet detection complete
+**Status:** BROKEN - Will fail on fresh R installations
+**Bug:** Missing dependency installation for sctransform and glmGamPoi packages
