@@ -80,3 +80,7 @@ library(sctransform)  # This will fail if not installed
 # seurat_obj <- SCTransform(seurat_obj, verbose = FALSE)
 
 message("Normalization complete")
+
+# Run PCA
+seurat_obj <- RunPCA(seurat_obj, features = VariableFeatures(object = seurat_obj))
+message("PCA completed")

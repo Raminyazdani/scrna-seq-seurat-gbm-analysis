@@ -1,13 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | feat(norm): HOTFIX - Add missing normalization dependencies
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(dimred): Run principal component analysis
 
-Fixed critical bug from step 08 - missing package installations:
-- Added install_if_missing("sctransform", "CRAN")
-- Added install_if_missing("glmGamPoi", "Bioconductor")
-- Placed installations before library() calls
-- Restored consistency with established package management pattern
+Performed PCA dimensionality reduction:
+- Computed principal components using variable features from SCTransform
+- Calculated loadings showing gene contributions to each PC
+- Generated PC embeddings for all cells
 
-SCTransform normalization now works reliably on fresh R installations. The bug was discovered during testing on a clean environment when the script crashed with "package not found" errors.
+PCA reduces ~20,000 genes to a smaller number of principal components that capture the main axes of variation. This reduces noise and computational burden for downstream clustering.
 
-Lesson learned: Must maintain consistency with install_if_missing() pattern for all packages. Breaking this pattern causes deployment issues.
-
-Verification: Tested on fresh R installation, normalization runs successfully, no package loading errors.
+Verification: PCA runs successfully, PC embeddings calculated for all cells.
