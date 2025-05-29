@@ -1,10 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(dimred): Run principal component analysis
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(dimred): Determine optimal PC count with elbow plot
 
-Performed PCA dimensionality reduction:
-- Computed principal components using variable features from SCTransform
-- Calculated loadings showing gene contributions to each PC
-- Generated PC embeddings for all cells
+Determined number of PCs to use for downstream analysis:
+- Generated elbow plot showing variance explained by each PC
+- Identified elbow point where variance levels off
+- Selected 30 PCs based on visual inspection
 
-PCA reduces ~20,000 genes to a smaller number of principal components that capture the main axes of variation. This reduces noise and computational burden for downstream clustering.
+The elbow plot helps balance capturing biological variation (more PCs) against noise reduction (fewer PCs). The elbow point represents diminishing returns where additional PCs add more noise than signal.
 
-Verification: PCA runs successfully, PC embeddings calculated for all cells.
+Verification: Elbow plot shows clear leveling around PC 30, selected PC count is appropriate.

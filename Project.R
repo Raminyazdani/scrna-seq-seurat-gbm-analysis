@@ -84,3 +84,10 @@ message("Normalization complete")
 # Run PCA
 seurat_obj <- RunPCA(seurat_obj, features = VariableFeatures(object = seurat_obj))
 message("PCA completed")
+
+# Elbow plot for PC selection
+ElbowPlot(seurat_obj, ndims = 50)
+
+# Select 30 PCs based on elbow
+n_pcs <- 30
+message(paste("Selected", n_pcs, "principal components"))
