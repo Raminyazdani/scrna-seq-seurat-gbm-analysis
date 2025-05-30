@@ -1,11 +1,12 @@
-# Snapshot Info: Step 11
+# Snapshot Info: Step 12
 
-**Commit:** Basic clustering implementation (WITH BUG)
+**Commit:** Clustering parameter optimization (contains HOTFIX)
 
 **Changes:**
-- Added FindNeighbors for KNN graph construction
-- Implemented FindClusters with Louvain algorithm
-- **BUG:** Typo in parameter name 'resoltuion' instead of 'resolution'
+- **HOTFIX:** Fixed 'resoltuion' typo to 'resolution'
+- Added UMAP and t-SNE visualizations
+- Implemented clustering resolution optimization
+- Created cluster visualization plots
 
-**Status:** BROKEN - FindClusters will fail or use default resolution
-**Bug:** Parameter name typo prevents setting custom resolution
+**Status:** FIXED - Clustering with proper parameter settings
+**Fix for:** Step 11 bug - parameter typo in FindClusters

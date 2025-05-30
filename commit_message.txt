@@ -1,9 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(cluster): Add clustering
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(viz): Add UMAP/t-SNE visualizations
 
-Implemented cell clustering based on PCA results:
-- Added FindNeighbors using 30 PCs
-- Applied FindClusters for community detection
+Added non-linear dimensionality reduction visualizations:
+- Implemented UMAP reduction for visualization
+- Implemented t-SNE reduction as alternative view
+- Created cluster visualizations on both embeddings
+- Began parameter optimization exploration
 
-BUG INTRODUCED: Typo in parameter name - used 'resoltuion' instead of 'resolution'. This either causes an error or silently uses default resolution, leading to unexpected cluster counts.
+UMAP and t-SNE provide 2D visualizations of high-dimensional data, revealing cell relationships and cluster structure. However, still affected by resolution parameter bug from step 11.
 
-Status: BROKEN - Will require hotfix after adding visualizations.
+Verification: UMAP and t-SNE run successfully, visualizations generated, but cluster counts don't match expectations due to parameter bug.

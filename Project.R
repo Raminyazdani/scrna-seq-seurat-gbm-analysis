@@ -97,9 +97,12 @@ message("Normalization complete with proper dependencies")
 
 message("PCA analysis complete")
 
-# Clustering implementation
-seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
-# BUG: Using wrong parameter name 'resoltuion' instead of 'resolution'
-seurat_obj <- FindClusters(seurat_obj, resoltuion = 0.5)  # TYPO!
+# Graph-based clustering
+# seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
+# seurat_obj <- FindClusters(seurat_obj, resolution = 0.5)
 
-message("Clustering complete")
+# UMAP and t-SNE visualization
+# seurat_obj <- RunUMAP(seurat_obj, dims = 1:30)
+# seurat_obj <- RunTSNE(seurat_obj, dims = 1:30)
+
+message("Clustering and 2D visualization complete")
