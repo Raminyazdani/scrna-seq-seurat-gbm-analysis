@@ -1,11 +1,11 @@
-# Snapshot Info: Step 08
+# Snapshot Info: Step 11
 
-**Commit:** Add normalization (WITH BUG)
+**Commit:** Basic clustering implementation (WITH BUG)
 
 **Changes:**
-- Added SCTransform normalization
-- Configured glmGamPoi backend
-- **BUG:** Used library(sctransform) and library(glmGamPoi) without install_if_missing()
+- Added FindNeighbors for KNN graph construction
+- Implemented FindClusters with Louvain algorithm
+- **BUG:** Typo in parameter name 'resoltuion' instead of 'resolution'
 
-**Status:** BROKEN - Will fail on fresh R installations
-**Bug:** Missing dependency installation for sctransform and glmGamPoi packages
+**Status:** BROKEN - FindClusters will fail or use default resolution
+**Bug:** Parameter name typo prevents setting custom resolution

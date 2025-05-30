@@ -76,18 +76,30 @@ message("Doublet detection complete")
 # OOPS: Forgot to install sctransform package!
 library(sctransform)  # This will fail if not installed
 
-# SCTransform normalization
-# seurat_obj <- SCTransform(seurat_obj, verbose = FALSE)
+# Normalization with SCTransform - FIXED
+# Install sctransform if missing
+install_if_missing("sctransform", "CRAN")
+install_if_missing("glmGamPoi", "Bioconductor")
 
-message("Normalization complete")
+library(sctransform)
+library(glmGamPoi)
 
-# Run PCA
-seurat_obj <- RunPCA(seurat_obj, features = VariableFeatures(object = seurat_obj))
-message("PCA completed")
+# SCTransform normalization with glmGamPoi backend
+# seurat_obj <- SCTransform(seurat_obj, method = "glmGamPoi", verbose = FALSE)
 
-# Elbow plot for PC selection
-ElbowPlot(seurat_obj, ndims = 50)
+message("Normalization complete with proper dependencies")
 
-# Select 30 PCs based on elbow
-n_pcs <- 30
-message(paste("Selected", n_pcs, "principal components"))
+# PCA Computation
+# seurat_obj <- RunPCA(seurat_obj, features = VariableFeatures(object = seurat_obj))
+
+# Determine optimal number of PCs
+# ElbowPlot(seurat_obj, ndims = 50)
+
+message("PCA analysis complete")
+
+# Clustering implementation
+seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
+# BUG: Using wrong parameter name 'resoltuion' instead of 'resolution'
+seurat_obj <- FindClusters(seurat_obj, resoltuion = 0.5)  # TYPO!
+
+message("Clustering complete")

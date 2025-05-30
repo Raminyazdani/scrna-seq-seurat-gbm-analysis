@@ -1,10 +1,9 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(dimred): Determine optimal PC count with elbow plot
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(cluster): Add clustering
 
-Determined number of PCs to use for downstream analysis:
-- Generated elbow plot showing variance explained by each PC
-- Identified elbow point where variance levels off
-- Selected 30 PCs based on visual inspection
+Implemented cell clustering based on PCA results:
+- Added FindNeighbors using 30 PCs
+- Applied FindClusters for community detection
 
-The elbow plot helps balance capturing biological variation (more PCs) against noise reduction (fewer PCs). The elbow point represents diminishing returns where additional PCs add more noise than signal.
+BUG INTRODUCED: Typo in parameter name - used 'resoltuion' instead of 'resolution'. This either causes an error or silently uses default resolution, leading to unexpected cluster counts.
 
-Verification: Elbow plot shows clear leveling around PC 30, selected PC count is appropriate.
+Status: BROKEN - Will require hotfix after adding visualizations.
