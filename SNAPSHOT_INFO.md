@@ -1,12 +1,11 @@
-# Snapshot Info: Step 12
+# Snapshot Info: Step 13
 
-**Commit:** Clustering parameter optimization (contains HOTFIX)
+**Commit:** HOTFIX - Fix clustering parameter typo
 
 **Changes:**
-- **HOTFIX:** Fixed 'resoltuion' typo to 'resolution'
-- Added UMAP and t-SNE visualizations
-- Implemented clustering resolution optimization
-- Created cluster visualization plots
+- Fixed 'resoltuion' typo to 'resolution' in FindClusters call
+- Verified clustering now uses correct resolution parameter
+- Tested that clusters are properly formed
 
-**Status:** FIXED - Clustering with proper parameter settings
-**Fix for:** Step 11 bug - parameter typo in FindClusters
+**Status:** FIXED - Clustering parameter bug resolved
+**Fix for:** Step 11 bug - 'resoltuion' typo

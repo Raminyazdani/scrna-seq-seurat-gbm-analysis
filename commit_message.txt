@@ -1,11 +1,13 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(viz): Add UMAP/t-SNE visualizations
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | feat(cluster): HOTFIX - Fix resolution parameter typo
 
-Added non-linear dimensionality reduction visualizations:
-- Implemented UMAP reduction for visualization
-- Implemented t-SNE reduction as alternative view
-- Created cluster visualizations on both embeddings
-- Began parameter optimization exploration
+Fixed critical clustering bug from step 11:
+- Corrected parameter typo: 'resoltuion' → 'resolution'
+- Verified proper parameterization with resolution=0.5
+- Tested cluster formation with correct parameters
+- Confirmed expected cluster counts now achieved
 
-UMAP and t-SNE provide 2D visualizations of high-dimensional data, revealing cell relationships and cluster structure. However, still affected by resolution parameter bug from step 11.
+The typo was discovered when reviewing cluster counts that didn't match expectations. Code review revealed the misspelled parameter name, which either threw an error or was silently ignored by Seurat.
 
-Verification: UMAP and t-SNE run successfully, visualizations generated, but cluster counts don't match expectations due to parameter bug.
+Lesson learned: Parameter typos can cause silent failures. Always verify parameter names against documentation.
+
+Verification: Clustering now produces expected number of clusters, resolution parameter properly controls granularity.
