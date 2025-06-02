@@ -106,3 +106,13 @@ message("PCA analysis complete")
 # seurat_obj <- RunTSNE(seurat_obj, dims = 1:30)
 
 message("Clustering and 2D visualization complete")
+
+# Load reference data for annotation
+install_if_missing("SingleR", "Bioconductor")
+install_if_missing("celldex", "Bioconductor")
+
+library(SingleR)
+library(celldex)
+
+ref_data <- HumanPrimaryCellAtlasData()
+message("Reference data loaded for cell type annotation")

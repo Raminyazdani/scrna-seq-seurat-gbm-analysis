@@ -1,13 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | feat(cluster): HOTFIX - Fix resolution parameter typo
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(annotation): Load reference cell atlas
 
-Fixed critical clustering bug from step 11:
-- Corrected parameter typo: 'resoltuion' → 'resolution'
-- Verified proper parameterization with resolution=0.5
-- Tested cluster formation with correct parameters
-- Confirmed expected cluster counts now achieved
+Loaded reference data for cell type annotation:
+- Added SingleR package for automated annotation
+- Added celldex package for reference datasets
+- Downloaded Human Primary Cell Atlas reference
 
-The typo was discovered when reviewing cluster counts that didn't match expectations. Code review revealed the misspelled parameter name, which either threw an error or was silently ignored by Seurat.
+The reference atlas contains known expression profiles for various human cell types. SingleR will compare cluster profiles against this reference to predict cell type identities.
 
-Lesson learned: Parameter typos can cause silent failures. Always verify parameter names against documentation.
-
-Verification: Clustering now produces expected number of clusters, resolution parameter properly controls granularity.
+Verification: Reference data downloads successfully, contains expected cell types.
