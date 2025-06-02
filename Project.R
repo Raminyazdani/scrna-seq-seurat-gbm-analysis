@@ -116,3 +116,11 @@ library(celldex)
 
 ref_data <- HumanPrimaryCellAtlasData()
 message("Reference data loaded for cell type annotation")
+
+# Perform automated annotation
+sce <- as.SingleCellExperiment(seurat_obj)
+annotations <- SingleR(test = sce, ref = ref_data, labels = ref_data$label.main)
+
+# Add to Seurat object
+seurat_obj$cell_type <- annotations$labels
+message("Cell type annotation complete")

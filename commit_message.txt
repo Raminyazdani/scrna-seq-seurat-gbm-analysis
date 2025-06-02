@@ -1,10 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(annotation): Load reference cell atlas
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(annotation): Perform automated cell type annotation
 
-Loaded reference data for cell type annotation:
-- Added SingleR package for automated annotation
-- Added celldex package for reference datasets
-- Downloaded Human Primary Cell Atlas reference
+Performed reference-based cell type annotation:
+- Converted Seurat object to SingleCellExperiment for compatibility
+- Ran SingleR comparing clusters against reference atlas
+- Assigned predicted cell type labels to each cell
+- Added annotations to Seurat object metadata
 
-The reference atlas contains known expression profiles for various human cell types. SingleR will compare cluster profiles against this reference to predict cell type identities.
+SingleR uses correlation-based matching between cluster expression profiles and reference cell types, providing automated biological interpretation of computational clusters.
 
-Verification: Reference data downloads successfully, contains expected cell types.
+Verification: Annotation completes successfully, predicted cell types are biologically plausible.
