@@ -132,3 +132,11 @@ message("Cell type visualization complete")
 # Find marker genes
 markers <- FindAllMarkers(seurat_obj, only.pos = TRUE, min.pct = 0.25)
 message("Differential expression testing complete")
+
+# Filter and rank markers
+significant_markers <- markers %>%
+  filter(p_val_adj < 0.05) %>%
+  group_by(cluster) %>%
+  top_n(10, avg_log2FC)
+
+message("Top marker genes identified for each cluster")

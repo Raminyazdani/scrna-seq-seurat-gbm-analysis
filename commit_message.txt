@@ -1,11 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(de): Perform differential expression testing
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(de): Filter and rank marker genes
 
-Performed differential expression analysis:
-- Used FindAllMarkers to identify cluster-specific genes
-- Tested only positive markers (upregulated in each cluster)
-- Applied min.pct threshold (gene expressed in ≥25% of cells)
-- Calculated log fold-changes and adjusted p-values
+Filtered and ranked marker genes:
+- Applied significance threshold (adjusted p-value < 0.05)
+- Selected top 10 markers per cluster by fold-change
+- Created ranked lists for biological interpretation
 
-Identifies genes that distinguish each cluster from all others, providing molecular signatures for cell populations.
+Focusing on top markers helps identify the most characteristic genes for each cell population, which can be validated against known biology or used for downstream analysis.
 
-Verification: DE testing completes successfully, identifies hundreds of significant marker genes.
+Verification: Top markers show strong fold-changes, include known cell type-specific genes.
