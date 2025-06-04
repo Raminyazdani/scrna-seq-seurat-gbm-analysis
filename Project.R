@@ -128,3 +128,7 @@ message("Cell type annotation complete")
 # Visualize cell type annotations
 DimPlot(seurat_obj, reduction = "umap", group.by = "cell_type")
 message("Cell type visualization complete")
+
+# Find marker genes
+markers <- FindAllMarkers(seurat_obj, only.pos = TRUE, min.pct = 0.25)
+message("Differential expression testing complete")

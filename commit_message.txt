@@ -1,10 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(annotation): Visualize cell type composition
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(de): Perform differential expression testing
 
-Created cell type composition visualizations:
-- UMAP plot colored by predicted cell types
-- Shows spatial distribution of different cell types
-- Reveals cellular heterogeneity in the dataset
+Performed differential expression analysis:
+- Used FindAllMarkers to identify cluster-specific genes
+- Tested only positive markers (upregulated in each cluster)
+- Applied min.pct threshold (gene expressed in ≥25% of cells)
+- Calculated log fold-changes and adjusted p-values
 
-Visualization confirms annotation quality - similar cell types should cluster together. Clear separation indicates successful annotation; mixed clusters may indicate ambiguous cell states.
+Identifies genes that distinguish each cluster from all others, providing molecular signatures for cell populations.
 
-Verification: Cell type visualization shows clear patterns, annotated types match expected biology.
+Verification: DE testing completes successfully, identifies hundreds of significant marker genes.
