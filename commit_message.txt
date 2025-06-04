@@ -1,11 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(annotation): Perform automated cell type annotation
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(annotation): Visualize cell type composition
 
-Performed reference-based cell type annotation:
-- Converted Seurat object to SingleCellExperiment for compatibility
-- Ran SingleR comparing clusters against reference atlas
-- Assigned predicted cell type labels to each cell
-- Added annotations to Seurat object metadata
+Created cell type composition visualizations:
+- UMAP plot colored by predicted cell types
+- Shows spatial distribution of different cell types
+- Reveals cellular heterogeneity in the dataset
 
-SingleR uses correlation-based matching between cluster expression profiles and reference cell types, providing automated biological interpretation of computational clusters.
+Visualization confirms annotation quality - similar cell types should cluster together. Clear separation indicates successful annotation; mixed clusters may indicate ambiguous cell states.
 
-Verification: Annotation completes successfully, predicted cell types are biologically plausible.
+Verification: Cell type visualization shows clear patterns, annotated types match expected biology.

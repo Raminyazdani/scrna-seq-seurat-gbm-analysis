@@ -124,3 +124,7 @@ annotations <- SingleR(test = sce, ref = ref_data, labels = ref_data$label.main)
 # Add to Seurat object
 seurat_obj$cell_type <- annotations$labels
 message("Cell type annotation complete")
+
+# Visualize cell type annotations
+DimPlot(seurat_obj, reduction = "umap", group.by = "cell_type")
+message("Cell type visualization complete")
