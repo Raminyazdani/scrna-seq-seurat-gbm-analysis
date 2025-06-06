@@ -140,3 +140,16 @@ significant_markers <- markers %>%
   top_n(10, avg_log2FC)
 
 message("Top marker genes identified for each cluster")
+
+# Gene Ontology enrichment
+install_if_missing("clusterProfiler", "Bioconductor")
+install_if_missing("org.Hs.eg.db", "Bioconductor")
+
+library(clusterProfiler)
+library(org.Hs.eg.db)
+
+# Run GO enrichment for first cluster
+cluster0_genes <- markers %>% filter(cluster == 0, p_val_adj < 0.05) %>% pull(gene)
+go_results <- enrichGO(gene = cluster0_genes, OrgDb = org.Hs.eg.db, 
+                       keyType = "SYMBOL", ont = "BP")
+message("GO enrichment analysis complete")

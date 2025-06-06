@@ -1,10 +1,11 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(de): Filter and rank marker genes
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(enrichment): Perform Gene Ontology enrichment
 
-Filtered and ranked marker genes:
-- Applied significance threshold (adjusted p-value < 0.05)
-- Selected top 10 markers per cluster by fold-change
-- Created ranked lists for biological interpretation
+Implemented Gene Ontology (GO) enrichment analysis:
+- Added clusterProfiler for pathway analysis
+- Added org.Hs.eg.db for human gene annotations
+- Performed GO enrichment on marker genes
+- Focused on Biological Process (BP) ontology
 
-Focusing on top markers helps identify the most characteristic genes for each cell population, which can be validated against known biology or used for downstream analysis.
+GO enrichment identifies biological processes and molecular functions over-represented in marker genes, providing functional interpretation of cell populations beyond just gene lists.
 
-Verification: Top markers show strong fold-changes, include known cell type-specific genes.
+Verification: Enrichment analysis completes successfully, identifies biologically relevant GO terms.
