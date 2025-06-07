@@ -153,3 +153,14 @@ cluster0_genes <- markers %>% filter(cluster == 0, p_val_adj < 0.05) %>% pull(ge
 go_results <- enrichGO(gene = cluster0_genes, OrgDb = org.Hs.eg.db, 
                        keyType = "SYMBOL", ont = "BP")
 message("GO enrichment analysis complete")
+
+# Additional pathway databases
+install_if_missing("enrichplot", "Bioconductor")
+library(enrichplot)
+
+# KEGG pathway analysis
+kegg_results <- enrichKEGG(gene = cluster0_genes, organism = "hsa")
+
+# Visualizations
+dotplot(go_results)
+message("Pathway enrichment complete")

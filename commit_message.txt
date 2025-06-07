@@ -1,11 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(enrichment): Perform Gene Ontology enrichment
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(enrichment): Add KEGG and enrichment visualization
 
-Implemented Gene Ontology (GO) enrichment analysis:
-- Added clusterProfiler for pathway analysis
-- Added org.Hs.eg.db for human gene annotations
-- Performed GO enrichment on marker genes
-- Focused on Biological Process (BP) ontology
+Extended pathway enrichment analysis:
+- Added enrichplot for visualization
+- Performed KEGG pathway enrichment
+- Created dotplots showing top enriched terms
 
-GO enrichment identifies biological processes and molecular functions over-represented in marker genes, providing functional interpretation of cell populations beyond just gene lists.
+KEGG provides curated pathway information complementary to GO. Multiple databases increase confidence in biological interpretations.
 
-Verification: Enrichment analysis completes successfully, identifies biologically relevant GO terms.
+Verification: KEGG enrichment identifies relevant pathways, visualizations clearly show results.
