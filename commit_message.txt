@@ -1,10 +1,12 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(enrichment): Add KEGG and enrichment visualization
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(portfolio): Create project identity document
 
-Extended pathway enrichment analysis:
-- Added enrichplot for visualization
-- Performed KEGG pathway enrichment
-- Created dotplots showing top enriched terms
+Created project_identity.md with professional project framing:
+- Display title: "Single-Cell RNA-Seq Analysis of Glioblastoma with Seurat"
+- Comprehensive tagline and description
+- Technology stack documentation
+- Problem statement and approach
+- Input/output specifications
 
-KEGG provides curated pathway information complementary to GO. Multiple databases increase confidence in biological interpretations.
+This document establishes the professional identity for portfolio presentation, clearly communicating project purpose, scope, and technical details.
 
-Verification: KEGG enrichment identifies relevant pathways, visualizations clearly show results.
+Verification: project_identity.md created with complete, professional content.
