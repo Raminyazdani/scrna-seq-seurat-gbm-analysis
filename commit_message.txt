@@ -1,12 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(portfolio): Create project identity document
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(portfolio): Add suggestion tracking and report
 
-Created project_identity.md with professional project framing:
-- Display title: "Single-Cell RNA-Seq Analysis of Glioblastoma with Seurat"
-- Comprehensive tagline and description
-- Technology stack documentation
-- Problem statement and approach
-- Input/output specifications
+Created change tracking documentation:
+- suggestion.txt: Identified portfolio improvements
+- suggestions_done.txt: Documented applied changes
+- report.md: Comprehensive change report
 
-This document establishes the professional identity for portfolio presentation, clearly communicating project purpose, scope, and technical details.
+These files provide transparency about what was changed and why, demonstrating thoughtful portfolio preparation and attention to professionalism.
 
-Verification: project_identity.md created with complete, professional content.
+Verification: All tracking files created with detailed change documentation.
