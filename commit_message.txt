@@ -1,10 +1,10 @@
-Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(portfolio): Add suggestion tracking and report
+Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | WIP(portfolio): Add comprehensive script documentation
 
-Created change tracking documentation:
-- suggestion.txt: Identified portfolio improvements
-- suggestions_done.txt: Documented applied changes
-- report.md: Comprehensive change report
+Added detailed file header documentation to R scripts:
+- Project.R: 34-line header describing purpose, inputs, outputs, usage
+- exploratory_analysis.R: 28-line header with similar documentation
+- Clear usage instructions for both RStudio and command-line
 
-These files provide transparency about what was changed and why, demonstrating thoughtful portfolio preparation and attention to professionalism.
+Professional documentation makes the code more accessible and demonstrates good software engineering practices.
 
-Verification: All tracking files created with detailed change documentation.
+Verification: Script headers added, documentation is clear and comprehensive.

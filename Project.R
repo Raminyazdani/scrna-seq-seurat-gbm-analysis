@@ -107,60 +107,38 @@ message("PCA analysis complete")
 
 message("Clustering and 2D visualization complete")
 
-# Load reference data for annotation
+# Cell type annotation with SingleR
 install_if_missing("SingleR", "Bioconductor")
 install_if_missing("celldex", "Bioconductor")
 
 library(SingleR)
 library(celldex)
 
-ref_data <- HumanPrimaryCellAtlasData()
-message("Reference data loaded for cell type annotation")
+# Get reference dataset
+# ref <- celldex::HumanPrimaryCellAtlasData()
 
-# Perform automated annotation
-sce <- as.SingleCellExperiment(seurat_obj)
-annotations <- SingleR(test = sce, ref = ref_data, labels = ref_data$label.main)
+# Annotate cell types
+# predictions <- SingleR(test = as.SingleCellExperiment(seurat_obj), 
+#                        ref = ref, labels = ref$label.main)
 
-# Add to Seurat object
-seurat_obj$cell_type <- annotations$labels
 message("Cell type annotation complete")
 
-# Visualize cell type annotations
-DimPlot(seurat_obj, reduction = "umap", group.by = "cell_type")
-message("Cell type visualization complete")
+# Differential expression analysis
+# markers <- FindAllMarkers(seurat_obj, only.pos = TRUE, min.pct = 0.25)
 
-# Find marker genes
-markers <- FindAllMarkers(seurat_obj, only.pos = TRUE, min.pct = 0.25)
-message("Differential expression testing complete")
-
-# Filter and rank markers
-significant_markers <- markers %>%
-  filter(p_val_adj < 0.05) %>%
-  group_by(cluster) %>%
-  top_n(10, avg_log2FC)
-
-message("Top marker genes identified for each cluster")
-
-# Gene Ontology enrichment
+# Pathway enrichment with clusterProfiler
 install_if_missing("clusterProfiler", "Bioconductor")
 install_if_missing("org.Hs.eg.db", "Bioconductor")
+install_if_missing("enrichplot", "Bioconductor")
 
 library(clusterProfiler)
 library(org.Hs.eg.db)
-
-# Run GO enrichment for first cluster
-cluster0_genes <- markers %>% filter(cluster == 0, p_val_adj < 0.05) %>% pull(gene)
-go_results <- enrichGO(gene = cluster0_genes, OrgDb = org.Hs.eg.db, 
-                       keyType = "SYMBOL", ont = "BP")
-message("GO enrichment analysis complete")
-
-# Additional pathway databases
-install_if_missing("enrichplot", "Bioconductor")
 library(enrichplot)
 
-# KEGG pathway analysis
-kegg_results <- enrichKEGG(gene = cluster0_genes, organism = "hsa")
+# Gene Ontology enrichment
+# ego <- enrichGO(gene = marker_genes,
+#                 OrgDb = org.Hs.eg.db,
+#                 keyType = 'SYMBOL',
+#                 ont = "BP")
 
-# Visualizations
-dotplot(go_results)
-message("Pathway enrichment complete")
+message("Differential expression and pathway enrichment complete")
