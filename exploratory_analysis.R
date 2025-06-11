@@ -1,16 +1,15 @@
 # ============================================================================
-# Single-Cell RNA-Seq Analysis Pipeline for Glioblastoma
+# Exploratory Single-Cell RNA-Seq Analysis - Breast Cancer Dataset
 # ============================================================================
 #
 # Description:
-#   Comprehensive single-cell RNA sequencing analysis pipeline for studying
-#   glioblastoma tumor heterogeneity. Performs quality control, normalization,
-#   dimensionality reduction, clustering, cell type annotation, and
-#   differential expression analysis.
+#   Exploratory analysis script for breast cancer single-cell RNA-seq data
+#   from GEO dataset GSE75688. This script demonstrates the analysis pipeline
+#   with a focus on BC07 patient samples.
 #
 # Usage:
-#   From RStudio: source("Project.R")
-#   From command line: Rscript Project.R (ensure you're in repo root)
+#   From RStudio: source("exploratory_analysis.R")
+#   From command line: Rscript exploratory_analysis.R (ensure you're in repo root)
 #
 # Inputs:
 #   - GEO dataset GSE75688 (downloaded automatically)
@@ -19,17 +18,13 @@
 # Outputs:
 #   - QC plots and statistics
 #   - Dimensionality reduction visualizations (PCA, UMAP, t-SNE)
-#   - Cell cluster assignments and annotations
-#   - Marker gene lists
-#   - Differential expression results
-#   - Pathway enrichment analysis
+#   - Cell cluster assignments
 #   - All outputs stored in plot_dict and table_dict objects
 #
-# Requirements:
-#   - R 4.x
-#   - See README.md for complete package list
+# Note:
+#   This is a simplified version compared to Project.R, focusing on core
+#   analysis steps without extensive enrichment analysis.
 #
-# Author: Ramin Yazdani
 # Repository: https://github.com/Raminyazdani/scrna-seq-seurat-gbm-analysis
 # ============================================================================
 
@@ -78,13 +73,7 @@ packages_list = c(
   "Matrix",
   "kableExtra",
   "harmony",
-  "glmGamPoi",
-  "clusterProfiler",
-  "org.Hs.eg.db",
-  "SingleR",
-  "celldex",
-  "enrichplot",
-  "clusterProfiler"
+  "glmGamPoi"
 )
 
 install_if_missing(packages_list)
@@ -258,12 +247,8 @@ gbm[["percent.ERCC"]] <-  PercentageFeatureSet(gbm, pattern = "^ERCC")  # ERCC s
 gbm[["percent.ribo"]] <-  PercentageFeatureSet(gbm, pattern = "^RPS |^RPL")  # Ribosomal gene percentage
 gbm[["percent.hb"]] <-  PercentageFeatureSet(gbm, pattern = "^HB[^(P)]")  # Hemoglobin gene percentage
 
-colnames(gbm@meta.data)
 table_dict$QC_metrics = gbm@meta.data %>% select(1:ncol(gbm@meta.data)) %>% rename("nCount_RNA" =
                                                                                      "genes detected per cell") %>% rename("nFeature_RNA" = "Total UMI counts per cell")
-table_dict$QC_metrics = gbm@meta.data %>% select(1:ncol(gbm@meta.data)) %>% rename("genes detected per cell" ="nCount_RNA"
-                                                                                     ) %>% rename("Total UMI counts per cell"="nFeature_RNA")
-
 
 # Extract metadata from the Seurat object
 numeric_metadata <- gbm@meta.data[, sapply(gbm@meta.data, function(x)
@@ -543,15 +528,15 @@ while (TRUE) {
   optimal_pcs <- which(cum_variance > 0.9)[1]
   opts <- append(opts, optimal_pcs)
   if (length(opts) > 3) {
-    if (opts[length(opts) - 1] - opts[length(opts) - 2] > opts[length(opts)] - opts[length(opts)] -
-        1) {
+    if (opts[length(opts) - 1] - opts[length(opts) - 2] > opts[length(opts)
+                                                               ] - opts[length(opts)]-1) {
       break
     }
   }
 }
 
-npcs_n = ceiling(sum(opts) / length(opts))
-rm(e, cum_variance, optimal_pcs, opts, stdev, gbm_test)
+npcs_n = ceiling(sum(opts)/length(opts))
+rm(e,cum_variance,optimal_pcs,opts,stdev,gbm_test)
 
 
 # running with optimal pca
@@ -576,18 +561,17 @@ for (i in 1:npcs_n) {
       dims = c(i, j),
       group.by = "patient.name",
       pt.size = 0.5,
-    ) + theme_cowplot(font_size = 4) + guides(color = guide_legend(override.aes = list(size =
-                                                                                         0.5), ncol = 1))
+    )+ theme_cowplot(font_size = 4) + guides(color = guide_legend(override.aes = list(size=0.5), ncol=1) )
     all_dims[[paste(i, "-", j)]] <- d
   }
 }
 
-plot_dict$all_dims <- all_dims
-rm(i, j, d, npcs_n, all_dims)
+plot_dict$all_dims <-all_dims
+rm(i, j, d, npcs_n,all_dims)
 
 # all_dims has all the dimensions dimplots  , visualizations
 
-wrap_plots(plot_dict$all_dims$`1 - 2`, plot_dict$all_dims$`2 - 3`)
+wrap_plots(plot_dict$all_dims$`1 - 2`,plot_dict$all_dims$`2 - 3`)
 wrap_plots(plot_dict$all_dims)
 
 
@@ -600,269 +584,41 @@ wrap_plots(plot_dict$all_dims)
 # NOOOOOOOO NEEEEEEEEED
 
 # Find neighbors and clusters
-gbm <- FindNeighbors(gbm, dims = 1:dim(gbm[["pca"]])[2], reduction = "pca")
-
-
-get_string_data_modularity <- function(gbm, res) {
-  output <- capture.output(FindClusters(
-    gbm,
-    resolution = res,
-    method = "igraph",
-    n.iter = 100
-  ))
-  # Convert the output to a single string
-  output_text <- paste(output, collapse = " ")
-  
-  modularity_value <- str_extract(output_text,
-                                  "Maximum modularity in 10 random starts: \\d+\\.\\d*")
-  modularity_numeric <- as.numeric(str_extract(modularity_value, "\\d+\\.\\d*"))
-  communities_value <- str_extract(output_text, "Number of communities: \\d+")
-  communities_numeric <- as.numeric(str_extract(communities_value, "\\d+"))
-
-
-  return(list(modularity = modularity_numeric, communities = communities_numeric))
-  
-}
-
-count_floating_point_digits <- function(number) {
-  # Convert the number to a string and split by the decimal point
-  number_str <- as.character(number)
-  split_number <- strsplit(number_str, "\\.")[[1]]
-  
-  # Calculate the number of digits after the decimal point
-  if (length(split_number) > 1) {
-    floating_point_digits <- nchar(split_number[[2]])
-  } else {
-    floating_point_digits <- 0  # If there's no decimal point
-  }
-  
-  return(floating_point_digits)
-}
-target_communities = 2
-depth = 0.0001
-tlow = 0
-thigh = 2
-t_depth = 0.1
-best_modularities = data.frame()
-while (TRUE) {
-  print(t_depth)
-  all_t = seq(tlow, thigh, t_depth)
-  all_t_res = data.frame()
-  for (tt in all_t) {
-    x = get_string_data_modularity(gbm, tt)
-    temp_df <- data.frame(
-      tt = as.character(tt),
-      modularity = x$modularity,
-      communities = x$communities
-    )
-    
-    # Combine the temporary data frame with the main results data frame
-    all_t_res <- rbind(all_t_res, temp_df)
-    
-  }
-  all_t_res$tt <- as.numeric(as.character(all_t_res$tt))
-  community_2_res <- subset(all_t_res, communities == target_communities)
-  
-  # Find the lowest and highest `tt` values
-  lowest_tt <- min(community_2_res$tt)
-  highest_tt <- max(community_2_res$tt)
-  max_index <- which.max(community_2_res$modularity)
-  max_row <- community_2_res[max_index, ]
-  
-  best_modularities <- rbind(best_modularities,max_row)
-  
-  tlow = lowest_tt - t_depth
-  thigh = lowest_tt + t_depth
-
-  type(t_depth)
-  if (isTRUE(all.equal(t_depth, depth))) {
-    max_index <- which.max(best_modularities$modularity)
-    max_row <- best_modularities[max_index, ]
-    
-    best_modularities <- max_row 
-    colnames(best_modularities)[colnames(best_modularities) == "tt"] <- "best_resolution"
-    
-    break
-  }
-  t_depth = t_depth * 0.1
-}
-
-# Print the modularity value
-table_dict$best_modularity_clustering = best_modularities
-rm(community_2_res,all_t_res,temp_df,x,all_t,depth,highest_tt,lowest_tt,max_index,t_depth,tt,tlow,thigh,target_communities,best_modularities)
-
+gbm <- FindNeighbors(gbm, dims = 1:20, reduction = "pca")
 gbm <- FindClusters(gbm,
-                    resolution = table_dict$best_modularity_clustering$best_resolution,
+                    resolution = 0.5,
                     method = "igraph",
-                    n.iter = 100)
-
+                    n.iter = 20)
 gbm <- FindClusters(gbm,
-                    resolution =1,
+                    resolution = 0.01,
                     method = "igraph",
-                    n.iter = 100)
-
+                    n.iter = 20)
+gbm <- FindClusters(gbm,
+                    resolution = 1,
+                    method = "igraph",
+                    n.iter = 20)
 
 # Run UMAP and t-SNE for visualization
-gbm <- RunUMAP(gbm, reduction = "pca", dims = 1:dim(gbm[["pca"]])[2])
-
+gbm <- RunUMAP(gbm, reduction = "pca", dims = 1:20)
 gbm <- RunTSNE(gbm,
                reduction = "pca",
-               dims = 1:dim(gbm[["pca"]])[2],
+               dims = 1:20,
                perplexity = 30)
 
 # Plot UMAP and t-SNE results
-colnames(gbm@meta.data)
-
-p1_umap <- DimPlot(object = gbm, reduction = "umap",group.by = "seurat_clusters")
+p1_umap <- DimPlot(object = gbm, reduction = "umap")
 p2_umap <- DimPlot(object = gbm,
                    reduction = "umap",
                    group.by = "patient.name")
 
+# Combine UMAP plots into a grid
+plot_grid(p1_umap, p2_umap, labels = c("A", "B"))
 
 # Plot t-SNE results
-p1_tsne <- DimPlot(object = gbm, reduction = "tsne",group.by = "seurat_clusters")
+p1_tsne <- DimPlot(object = gbm, reduction = "tsne")
 p2_tsne <- DimPlot(object = gbm,
                    reduction = "tsne",
                    group.by = "patient.name")
 
 # Combine t-SNE plots into a grid
-plot_grid(p1_umap,p2_umap,p1_tsne, p2_tsne, labels = c("A","B","C", "D"))
-
-ref <- HumanPrimaryCellAtlasData()
-
-# Perform cell type annotation
-singleR_results <- SingleR(test = gbm@assays$RNA@data, ref = ref, labels = ref$label.main)
-
-# Add SingleR results to the Seurat metadata
-gbm$SingleR_labels <- singleR_results$labels
-
-gbm@meta.data$cell_type_markers <- gbm@meta.data$SingleR_labels
-
-memory.limit(9999999999)
-
-
-df <- data.frame(gbm@meta.data$cell_type_markers, gbm@meta.data$patient.name) 
-colnames(df) <- c("Cell_Type", "Patient")
-df <- df %>% group_by(Patient, Cell_Type) %>% 
-  summarise(Nb = n()) %>%
-  mutate(C = sum(Nb)) %>%
-  mutate(Percent = Nb/C*100) 
-
-ggplot(df, aes(fill=Cell_Type, y=Percent, x=Patient)) + 
-  geom_bar(position="fill", stat="identity") + scale_fill_viridis(discrete = T) + xlab("") + 
-  theme(legend.position='top', axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
-
-
-Idents(gbm) = gbm@meta.data$cell_type_markers
-
-gbm.markers = FindAllMarkers(gbm, min.pct = 0.1, logfc.threshold = 0.25, 
-                         test.use = "MAST")
-
-
-gbm.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_log2FC) -> top10
-
-DoHeatmap(gbm, features = top10$gene) + NoLegend()
-
-clusters <- unique(gbm.markers$cluster)
-gsea_results_list <- list() 
-
-
-for (cluster in clusters) {
-  
-  # Filter marker genes for the current cluster
-  Marker_cluster <- gbm.markers[gbm.markers$cluster == cluster, c(1, 2, 5, 7)]
-  
-  # Prepare the gene list for GSEA
-  original_gene_list <- Marker_cluster$avg_log2FC
-  names(original_gene_list) <- Marker_cluster$gene
-  gene_list <- na.omit(original_gene_list)
-  gene_list <- sort(gene_list, decreasing = TRUE)
-  
-  # Run GSEA for this cluster
-  gse <- gseGO(geneList = gene_list,
-               ont = "ALL",
-               keyType = "SYMBOL",
-               pvalueCutoff = 0.05,
-               OrgDb = org.Hs.eg.db,
-               pAdjustMethod = "BH")
-
-  gsea_results_list[[cluster]] <- gse
-  
-  # Optional: Visualize the results for this cluster
-  print(paste("Cluster:", cluster))
-  dotplot(gse, showCategory = 5, split = ".sign") + facet_grid(. ~ .sign) + ggtitle(paste("GSEA for Cluster", cluster))
-}
-
-
-
-Idents(gbm) <- 'seurat_clusters'
-
-cluster.markers <- FindAllMarkers(
-  object = gbm,
-  only.pos = TRUE,
-  min.pct = 0.25,
-  logfc.threshold = 0.25,
-  test.use = "MAST"
-)
-
-top_genes <- rownames(cluster.markers)
-DoHeatmap(gbm, features = top_genes)
-
-
-DEG_bc07_bc07ln <- FindMarkers(gbm, ident.1 = "BC07", ident.2 = "BC07LN", group.by = "patient.name")
-top_genes_pm <- rownames(DEG_bc07_bc07ln)[1:100]
-avg_expression <- AverageExpression(gbm, features = top_genes_pm, group.by = "patient.name")
-avg_expression_matrix <- avg_expression$SCT 
-
-pheatmap(avg_expression_matrix[top_genes_pm, ], 
-         cluster_rows = TRUE, 
-         cluster_cols = FALSE,  # No clustering for columns to keep BC07 and BC07LN separate
-         display_numbers = FALSE)
-
-top10_genes <- rownames(DEG_bc07_bc07ln)[1:10]
-
-# View the top 10 genes
-print(top10_genes)
-gene_list <- DEG_bc07_bc07ln$avg_log2FC
-names(gene_list) <- rownames(DEG_bc07_bc07ln)
-
-# Step 2: Perform Gene Ontology (GO) enrichment analysis
-go_enrichment <- enrichGO(gene = top10_genes,
-                          OrgDb = org.Hs.eg.db,
-                          keyType = "SYMBOL",
-                          ont = "ALL",  # You can choose "BP" (Biological Process), "MF" (Molecular Function), or "CC" (Cellular Component)
-                          pvalueCutoff = 0.05,
-                          qvalueCutoff = 0.05)
-
-dotplot(go_enrichment, showCategory = 10, title = "GO Enrichment Analysis for Top 10 Genes")
-
-enrich_genes <- function(gene_list,databases){
-  enr= enrichr(gene_list,databases)
-  for (i in seq_along(enr)){
-    cat("\nDatabase:",names(enr)[i],"\n")
-    print(head(enr[[i]]),10)
-  }
-  return(enr)
-}
-
-websiteLive <- getOption("enrichR.live")
-if (websiteLive) {
-  listEnrichrSites()
-  setEnrichrSite("Enrichr") # Human genes   
-}
-if (websiteLive) dbs <- listEnrichrDbs()
-dbs$libraryName
-library_names = c("KEGG_2021_Human", 
-                  "Reactome_2022", 
-                  "GO_Biological_Process_2023", 
-                  "GO_Molecular_Function_2023", 
-                  "GO_Cellular_Component_2023", 
-                  "OMIM_Disease", 
-                  "OMIM_Expanded", 
-                  "DisGeNET", 
-                  "Human_Phenotype_Ontology", 
-                  "WikiPathway_2023_Human", 
-                  "MSigDB_Hallmark_2020", 
-                  "BioCarta_2016")
-
-result_enrich = enrich_genes(top10_genes,library_names)
+plot_grid(p1_tsne, p2_tsne, labels = c("C", "D"))

@@ -1,1 +1,21 @@
-FILELOCATORBEFORE_SNIPPETAFTER_SNIPPETNOTES
+FILE	LOCATOR	BEFORE_SNIPPET	AFTER_SNIPPET	NOTES
+README.md	line 1	# Single Cell RNA Sequencing Project	# Single-Cell RNA-Seq Analysis of Glioblastoma with Seurat	Updated title to match professional identity
+README.md	line 3	**Project Type:** University Project	(removed line)	Removed academic trace
+README.md	line 6-8	This is a Single Cell RNA Sequencing analysis project...	A comprehensive single-cell RNA sequencing (scRNA-seq) analysis pipeline...	Reframed description professionally
+README.md	Section: Tech Stack	Basic list of packages	Detailed categorized list with descriptions	Enhanced documentation
+README.md	Section: Folder Structure	References to scRNA-seq_project/ and missing files	Updated to match actual repository structure	Corrected documentation
+README.md	Section: How to Run	Generic instructions	Detailed instructions for RStudio and command line	Improved usability and clarity
+README.md	Section: Inputs/Outputs	Brief list	Comprehensive documentation of data sources and all outputs	Enhanced documentation with details
+README.md	New Section: Analysis Methods	(did not exist)	Added detailed pipeline stages documentation	Improved transparency and understanding
+README.md	New Section: Reproducibility Notes	Brief notes	Detailed reproducibility guidance with random seed instructions	Enhanced reproducibility documentation
+README.md	Section: Troubleshooting	Basic tips	Comprehensive troubleshooting guide with solutions	Improved user support
+README.md	New Section: License and Citation	(did not exist)	Added license and citation information	Professional portfolio addition
+Project.R	line 1	rm = (list = ls())	Added 34-line header comment block	Added comprehensive file documentation
+Project.R	lines 104-112	setwd(dirname(rstudioapi::getActiveDocumentContext()$path))	Conditional check for rstudioapi with fallback and user message	Fixed RStudio-specific dependency, now works from command line
+Project.R	line 236	metadata = list(study = "final_project")	metadata = list(study = "gbm_scrnaseq_analysis")	Removed academic reference
+test.R	filename	test.R	exploratory_analysis.R	Renamed to descriptive name for portfolio
+exploratory_analysis.R	line 1	rm = (list = ls())	Added 28-line header comment block	Added comprehensive file documentation
+exploratory_analysis.R	lines 93-101	setwd(dirname(rstudioapi::getActiveDocumentContext()$path))	Conditional check for rstudioapi with fallback and user message	Fixed RStudio-specific dependency, now works from command line
+exploratory_analysis.R	line 225	metadata = list(study = "final_project")	metadata = list(study = "gbm_scrnaseq_analysis")	Removed academic reference
+scRNA-seq_project.docx	root level	Word document in repo root	Moved to archive/scRNA-seq_project.docx with archive/README.md	Archived assignment documentation, added explanation
+.gitignore	(implicit)	No exclusions for archive	archive/ remains tracked (intentional)	Archive directory tracked to document what was removed
