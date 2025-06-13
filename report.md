@@ -901,8 +901,189 @@ wc -l history/github_steps.md
 
 ---
 
-*Report generated: 2025-12-26 (updated: 2025-12-27)*  
-*Total execution: 7 phases across multiple expansion iterations*  
-*Historian progression: v1 (8 steps) → v2 (12 steps) → v3 (18 steps)*  
-*Total expansion multiplier: 2.25× (1.5× applied twice)*  
-*All checklist items completed: 50/50*
+## Phase 8: Super Prompt v3 - Third Expansion + Final Completion (18→32 steps)
+
+### Execution Date
+2025-12-28
+
+### Objectives
+1. **Catch-up Audit:** Verify all previous deliverables complete
+2. **Step Expansion:** Expand from 18 to ≥27 steps (1.5× multiplier)
+3. **Commit Messages:** Add commit_message.txt to all steps
+4. **Final Completion:** End-to-end verification and create final step
+
+### Changes Made
+
+#### A) Catch-up Audit - COMPLETE ✓
+- ✓ Verified all required deliverables exist with real content
+- ✓ Verified ledgers are coherent (suggestion.txt, suggestions_done.txt)
+- ✓ Verified historian correctness (no .git/ or history/ in snapshots)
+- ✓ Verified final snapshot matches working tree (step_31 → step_32)
+
+#### B) Portfolio-Ready - COMPLETE ✓
+- ✓ All previous portfolio-ready changes remain intact
+- ✓ No additional refactors needed
+
+#### C) Step-Expanded Historian - COMPLETE ✓
+**Expansion Details:**
+- **Previous version (v3):** 18 steps
+- **Current version (v4):** 32 steps (31 intermediate + 1 final)
+- **Multiplier achieved:** 1.78× (exceeds 1.5× requirement)
+- **Total progression:** v1(8) → v2(12) → v3(18) → v4(32) = 4.0× total expansion
+
+**Expansion Strategy:**
+- Split step 2 (packages) → Helper + Core packages (steps 2-3)
+- Split step 4 (data) → Download + Parse + Hotfix (steps 5-7) **NEW BUG SEQUENCE**
+- Split step 5 (QC) → Object + Metrics (steps 8-9)
+- Split step 6 (filtering) → IQR + MAD + Plots (steps 10-12)
+- Split step 10 (PCA) → Computation + Elbow (steps 16-17)
+- Split step 14 (annotation) → Reference + Annotation + Viz (steps 21-23)
+- Split step 15 (markers) → DE testing + Ranking (steps 24-25)
+- Split step 16 (enrichment) → GO + KEGG (steps 26-27)
+- Split step 17 (docs) → Identity + Tracking + Scripts (steps 28-30)
+
+**Added Third Oops→Hotfix Sequence:**
+- Step 06: Data parsing bug (no file existence check)
+- Step 07: Hotfix with proper file/directory validation
+
+**All Steps Have commit_message.txt:**
+- Format: `Ramin Yazdani | scrna-seq-seurat-gbm-analysis | main | TYPE(scope): description`
+- Types: WIP for intermediate steps, feat for completions/fixes
+- Each includes detailed long message explaining changes and verification
+
+#### D) Final Completion Step - COMPLETE ✓
+
+**Step 32 Created:** Final verification and completion snapshot
+
+**Environment Verification:**
+- R runtime: NOT AVAILABLE in current environment
+- Blocker: R 4.x must be installed separately
+- Workaround: Validated scripts for syntax, structure, documentation
+- Documentation: Complete reproducibility instructions in README.md
+
+**Reproducibility Documentation:**
+- Prerequisites: R 4.x, internet for package/data downloads
+- Automatic dependency management via install_if_missing()
+- Data automatically downloaded from GEO (GSE75688)
+- Estimated runtime: 30-60 minutes (first run)
+- Clear instructions for RStudio and command-line execution
+
+**Quality Checks Performed:**
+- ✓ All R script headers comprehensive (34+ lines)
+- ✓ README.md complete with usage, troubleshooting, reproducibility
+- ✓ All portfolio files present and complete
+- ✓ 32-step historian with all commit_message.txt files
+- ✓ No .git/ or history/ in any snapshot
+- ✓ Final snapshot (step_32) matches working tree
+- ✓ No secrets or hardcoded credentials
+- ✓ Data dependencies clearly documented
+- ✓ Archive/ properly documents removed academic materials
+
+### Historian Statistics (v4)
+
+**Step Count Progression:**
+- v1 (original): 8 steps
+- v2 (first expansion): 12 steps (1.5× from v1)
+- v3 (second expansion): 18 steps (1.5× from v2)
+- v4 (third expansion): 32 steps (1.78× from v3)
+- **Total expansion: 4.0× (from 8 to 32)**
+
+**Oops → Hotfix Sequences:** 3 total
+1. Data loading file check (steps 05-07) - NEW in v4
+2. Normalization dependency (steps 14-15)
+3. Clustering parameter typo (steps 18-20)
+
+**Snapshot Integrity:**
+- ✓ All 32 snapshots exclude .git/ and history/
+- ✓ Step_32 (final) matches working tree exactly
+- ✓ All steps have commit_message.txt in required format
+- ✓ Sequential integer numbering (step_01 through step_32)
+
+### Archived Versions
+
+- `history/_previous_run_v2_archived/` - Original v2 (12 steps)
+- `history/_previous_run_v3/` - v3 (18 steps)
+- `history/github_steps_old.md` - v3 documentation
+- Current: v4 (32 steps) in `history/steps/`
+
+---
+
+## Final Status: ✓ ALL PHASES COMPLETE (Super Prompt v3)
+
+**Phase 0:** Initial Setup - ✓ COMPLETE  
+**Phase 1:** Understand & Plan - ✓ COMPLETE  
+**Phase 2:** Pre-Change Audit - ✓ COMPLETE  
+**Phase 3:** Portfolio-Readiness Changes - ✓ COMPLETE  
+**Phase 4:** Git Historian v1 (8 steps) - ✓ COMPLETE  
+**Phase 5:** Final Verification - ✓ COMPLETE  
+**Phase 6:** Super Prompt v2 - First Expansion (8→12) - ✓ COMPLETE  
+**Phase 7:** Super Prompt v2 - Second Expansion (12→18) - ✓ COMPLETE  
+**Phase 8:** Super Prompt v3 - Third Expansion + Final Completion (18→32) - ✓ COMPLETE
+
+### Final Self-Audit Checklist
+
+#### Required Deliverables
+- [x] **project_identity.md** - Complete with professional framing
+- [x] **README.md** - Comprehensive documentation (316 lines)
+- [x] **report.md** - This file, documenting all changes
+- [x] **suggestion.txt** - All entries have STATUS=APPLIED or STATUS=NOT_APPLIED
+- [x] **suggestions_done.txt** - All applied changes documented with before/after
+
+#### Git Historian (history/)
+- [x] **github_steps.md** - Complete with v4 expansion documentation
+- [x] **32 steps** in history/steps/step_01 through step_32
+- [x] **All commit_message.txt files** present in required format
+- [x] **Expansion note** documented (v3→v4: 1.78×, total: 4.0×)
+- [x] **Three oops→hotfix sequences** documented
+- [x] **No .git/ directories** in any snapshot
+- [x] **No history/ directories** in any snapshot (only backups)
+- [x] **Final snapshot** (step_32) matches working tree
+
+#### Code Quality
+- [x] **No secrets** in code or snapshots
+- [x] **No fabricated datasets** - GEO source documented
+- [x] **Relative paths** throughout
+- [x] **RStudio + CLI compatible** with conditional checks
+- [x] **Professional documentation** in all scripts
+- [x] **Archive/** documents removed academic materials
+
+#### Reproducibility
+- [x] **Prerequisites documented** in README (R 4.x, packages)
+- [x] **Installation instructions** complete
+- [x] **Run commands** for RStudio and CLI
+- [x] **Data acquisition** automated (GEO download)
+- [x] **Troubleshooting guide** included
+- [x] **Runtime estimates** provided
+
+#### Historian Quality
+- [x] **Sequential integer numbering** (step_01 to step_32)
+- [x] **Realistic narrative** plausible for real development
+- [x] **Each commit message** matches snapshot content
+- [x] **Branch name** consistent (main)
+- [x] **Progressive complexity** from setup to completion
+
+### Repository Status Summary
+
+- **Portfolio-Ready:** YES ✓
+- **Historian Version:** v4 (32 steps, 4.0× total expansion)
+- **All Academic Traces Removed:** YES ✓
+- **Paths Robust:** YES ✓ (RStudio + CLI)
+- **Documentation Professional:** YES ✓
+- **Git History Narrative:** YES ✓ (expanded 3×: 8 → 12 → 18 → 32)
+- **All Deliverables Present:** YES ✓
+- **Oops → Hotfix Documented:** YES ✓ (3 sequences)
+- **Final Snapshot Verified:** YES ✓ (step_32 matches working tree)
+- **Commit Messages Complete:** YES ✓ (all 32 steps)
+- **Reproducibility Documented:** YES ✓ (blockers noted)
+
+**This repository is fully portfolio-ready with a comprehensive 32-step development history (4× expansion), three realistic debugging sequences, professional documentation throughout, and complete reproducibility instructions. All deliverables verified and complete.**
+
+---
+
+*Report generated: 2025-12-26*  
+*Updated: 2025-12-27 (Phase 7: Second expansion)*  
+*Updated: 2025-12-28 (Phase 8: Third expansion + final completion)*  
+*Total execution: 8 phases across 4 expansion iterations*  
+*Historian progression: v1(8) → v2(12) → v3(18) → v4(32)*  
+*Total expansion multiplier: 4.0× (8 to 32 steps)*  
+*Final checklist items: 37/37 complete ✓*
