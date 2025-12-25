@@ -1,1 +1,13 @@
 TYPE	FILE	LOCATOR	BEFORE_SNIPPET	PROPOSED_CHANGE	RATIONALE	STATUS
+TRACE	README.md	line 3	**Project Type:** University Project	Remove line entirely	Academic trace indicating university project	PENDING
+TRACE	README.md	line 1	# Single Cell RNA Sequencing Project	# Single-Cell RNA-Seq Analysis of Glioblastoma with Seurat	Align title with professional identity	PENDING
+PATH	Project.R	line 67	setwd(dirname(rstudioapi::getActiveDocumentContext()$path))	Use here::here() or document working directory requirement	RStudio-specific function that breaks when run from command line	PENDING
+PATH	test.R	line 61	setwd(dirname(rstudioapi::getActiveDocumentContext()$path))	Use here::here() or document working directory requirement	RStudio-specific function that breaks when run from command line	PENDING
+TRACE	Project.R	line 191	metadata = list(study = "final_project")	metadata = list(study = "gbm_analysis")	Remove academic reference "final_project"	PENDING
+TRACE	test.R	line 185	metadata = list(study = "final_project")	metadata = list(study = "gbm_analysis")	Remove academic reference "final_project"	PENDING
+RENAME	test.R	filename	test.R	analysis_breast_cancer.R or exploratory_analysis.R	Generic "test" name not descriptive for portfolio	PENDING
+DOC	README.md	Section "Folder Structure"	References scRNA-seq_project/ folder and exprMatrix__GBM_2.RData not in repo	Update to match actual repository structure	Documentation does not match actual repo structure	PENDING
+DOC	README.md	Multiple sections	Generic project descriptions	Update to match project_identity.md professional framing	Align README with established professional identity	PENDING
+STRUCTURE	scRNA-seq_project.docx	root level	Word document with project documentation	Archive or document what it contains in README	Word doc not typical for portfolio repos, may contain assignment details	PENDING
+DOC	Project.R	line 1-824	No file header comments	Add file header with description, usage, inputs/outputs	Missing documentation for main analysis script	PENDING
+DOC	README.md	Missing	No .env.example or environment configuration	Document environment requirements and optional configurations	Improve reproducibility	PENDING
