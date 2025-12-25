@@ -1,3 +1,33 @@
+# ============================================================================
+# Exploratory Single-Cell RNA-Seq Analysis - Breast Cancer Dataset
+# ============================================================================
+#
+# Description:
+#   Exploratory analysis script for breast cancer single-cell RNA-seq data
+#   from GEO dataset GSE75688. This script demonstrates the analysis pipeline
+#   with a focus on BC07 patient samples.
+#
+# Usage:
+#   From RStudio: source("exploratory_analysis.R")
+#   From command line: Rscript exploratory_analysis.R (ensure you're in repo root)
+#
+# Inputs:
+#   - GEO dataset GSE75688 (downloaded automatically)
+#   - Breast Cancer single-cell TPM expression matrix
+#
+# Outputs:
+#   - QC plots and statistics
+#   - Dimensionality reduction visualizations (PCA, UMAP, t-SNE)
+#   - Cell cluster assignments
+#   - All outputs stored in plot_dict and table_dict objects
+#
+# Note:
+#   This is a simplified version compared to Project.R, focusing on core
+#   analysis steps without extensive enrichment analysis.
+#
+# Repository: https://github.com/Raminyazdani/scrna-seq-seurat-gbm-analysis
+# ============================================================================
+
 rm = (list = ls())
 install_if_missing <- function(packages) {
   if (!requireNamespace("BiocManager", quietly = TRUE)) {
@@ -57,8 +87,18 @@ rm(list = ls())
 plot_dict <- list()
 table_dict <- list()
 
-# Set working directory to the script's location
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+# Set working directory
+# Note: When running from RStudio, this auto-detects the script location
+# When running from command line with Rscript, ensure you're in the repo root
+if (requireNamespace("rstudioapi", quietly = TRUE) && 
+    rstudioapi::isAvailable()) {
+  setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+} else {
+  # When running from command line, assume current directory is correct
+  # User should run from repository root
+  cat("Running from command line. Current directory:", getwd(), "\n")
+  cat("Ensure you're in the repository root directory.\n")
+}
 getwd()
 
 # Create directories for figures and data if they don't exist
@@ -182,7 +222,7 @@ sce <- SingleCellExperiment(
     patient.id = metadata$patient_id,
     patient.name = metadata$patient_name
   ),
-  metadata = list(study = "final_project")
+  metadata = list(study = "gbm_scrnaseq_analysis")
 )
 
 # Add gene symbols to rowData

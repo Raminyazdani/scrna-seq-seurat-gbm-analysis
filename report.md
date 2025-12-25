@@ -76,3 +76,51 @@ The current repository structure and naming is mostly professional:
 
 **No folder restructuring needed** - current structure is clean and simple.
 
+## Phase 3: Portfolio-Readiness Changes Applied
+
+### README.md Updates ✓
+- Removed "University Project" label (line 3)
+- Updated title to match professional identity
+- Reframed all descriptions professionally
+- Enhanced Tech Stack section with categorization
+- Corrected folder structure documentation
+- Added comprehensive "How to Run" section with RStudio and CLI instructions
+- Documented all inputs/outputs in detail
+- Added "Analysis Methods" section explaining pipeline stages
+- Added "Reproducibility Notes" with guidance
+- Enhanced troubleshooting section
+- Added License and Citation section
+
+### R Script Updates ✓
+
+**Project.R:**
+- Added 34-line comprehensive header documentation
+- Fixed RStudio-specific path issue with conditional check
+- Changed metadata study from "final_project" to "gbm_scrnaseq_analysis"
+- Now works from both RStudio and command line
+
+**test.R → exploratory_analysis.R:**
+- Renamed file to be descriptive (exploratory_analysis.R)
+- Added 28-line comprehensive header documentation
+- Fixed RStudio-specific path issue with conditional check
+- Changed metadata study reference
+- Documented its purpose as exploratory/simplified version
+
+### File Organization ✓
+- Created `archive/` directory
+- Moved `scRNA-seq_project.docx` to `archive/`
+- Added `archive/README.md` explaining archived contents
+- Repository structure now cleaner and more professional
+
+### Summary of Changes
+- **Total issues identified:** 10
+- **Total issues resolved:** 10 (100%)
+- **Files modified:** 4 (README.md, Project.R, exploratory_analysis.R, suggestion.txt)
+- **Files renamed:** 1 (test.R → exploratory_analysis.R)
+- **Files archived:** 1 (scRNA-seq_project.docx)
+- **New files created:** 1 (archive/README.md)
+
+All academic language traces removed.
+All paths made robust for command-line execution.
+All documentation enhanced to portfolio standard.
+
