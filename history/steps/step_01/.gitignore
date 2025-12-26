@@ -1,0 +1,20 @@
+# R specific
+.Rhistory
+.RData
+.Rproj.user
+*.Rproj
+
+# Data files
+data/
+*.rds
+*.RData
+*.rda
+
+# Output
+figures/
+plots/
+results/
+
+# System
+.DS_Store
+Thumbs.db
