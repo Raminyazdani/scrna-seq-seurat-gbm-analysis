@@ -1,26 +1,34 @@
-# Single-Cell RNA-Seq Analysis Pipeline
+# Single Cell RNA Sequencing Project
+
+A single-cell RNA sequencing analysis pipeline for studying glioblastoma tumor heterogeneity.
 
 ## Overview
 
-Pipeline for analyzing single-cell RNA sequencing data from glioblastoma samples.
+This project will implement a comprehensive scRNA-seq analysis pipeline using R and Seurat.
 
-## Progress
+## Planned Features
 
-- [x] Repository setup
-- [x] Package management system
-- [x] GEO data download functionality
-- [ ] Quality control
-- [ ] Clustering
-- [ ] Cell type annotation
+- Data loading from GEO
+- Quality control
+- Normalization
+- Dimensionality reduction
+- Clustering
+- Cell type annotation
 
-## Tech Stack
+## Requirements
 
-- R, Seurat, Bioconductor
-- GEOquery for data download
-- Automatic package installation
+- R (version 4.0+)
+- Seurat package
+- Bioconductor packages
 
-## Running
+## Setup
 
-```r
-source("Project.R")
+```bash
+# Clone repository
+git clone https://github.com/Raminyazdani/scrna-seq-seurat-gbm-analysis.git
+cd scrna-seq-seurat-gbm-analysis
 ```
+
+## Status
+
+Project in development.
