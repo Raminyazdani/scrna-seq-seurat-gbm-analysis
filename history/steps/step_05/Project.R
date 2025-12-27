@@ -49,25 +49,10 @@ if (length(gse) > 0) {
   message(paste("Expression matrix dimensions:", nrow(expr_data), "x", ncol(expr_data)))
 }
 
-# Quality Control Metrics
-library(Seurat)
+# Quality Control Metrics Calculation
+# Calculate basic QC metrics: nCount_RNA, nFeature_RNA, percent.mt
 
-# Create Seurat object (simplified for demonstration)
-# seurat_obj <- CreateSeuratObject(counts = expr_data)
-
-# Calculate QC metrics
-# seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
-# seurat_obj[["percent.ribo"]] <- PercentageFeatureSet(seurat_obj, pattern = "^RP[SL]")
+seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
+seurat_obj[["percent.ribo"]] <- PercentageFeatureSet(seurat_obj, pattern = "^RP[SL]")
 
 message("QC metrics calculated")
-
-# Doublet Detection
-install_if_missing("scDblFinder", "Bioconductor")
-library(scDblFinder)
-library(SingleCellExperiment)
-
-# Convert to SingleCellExperiment and detect doublets
-# sce <- as.SingleCellExperiment(seurat_obj)
-# sce <- scDblFinder(sce)
-
-message("Doublet detection complete")

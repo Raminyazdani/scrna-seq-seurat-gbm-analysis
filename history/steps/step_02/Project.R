@@ -1,34 +1,23 @@
 # Single-Cell RNA-Seq Analysis Pipeline
-# Step 02: Package Management and Installation
+# Step 02: Core Package Installation
 
-# Clean environment
-rm(list = ls())
+# Install core packages (Seurat, dplyr, ggplot2)
+packages_list <- c("Seurat", "dplyr", "ggplot2")
 
-# Function to install packages if missing
-install_if_missing <- function(package_name, source = "CRAN") {
-  if (!require(package_name, character.only = TRUE, quietly = TRUE)) {
-    message(paste("Installing", package_name, "from", source))
-    if (source == "Bioconductor") {
+install_if_missing <- function(pkg, source = "CRAN") {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    if (source == "CRAN") {
+      install.packages(pkg, dependencies = TRUE)
+    } else if (source == "Bioconductor") {
       if (!requireNamespace("BiocManager", quietly = TRUE))
         install.packages("BiocManager")
-      BiocManager::install(package_name, update = FALSE)
-    } else {
-      install.packages(package_name, dependencies = TRUE)
+      BiocManager::install(pkg)
     }
-    library(package_name, character.only = TRUE)
   }
 }
 
-# Install required CRAN packages
-cran_packages <- c("dplyr", "tidyverse", "ggplot2", "patchwork", "cowplot")
-for (pkg in cran_packages) {
+for (pkg in packages_list) {
   install_if_missing(pkg, "CRAN")
 }
 
-# Install required Bioconductor packages
-bioc_packages <- c("GEOquery", "Seurat", "SingleCellExperiment")
-for (pkg in bioc_packages) {
-  install_if_missing(pkg, "Bioconductor")
-}
-
-message("Package installation complete!")
+message("Core packages installed successfully")

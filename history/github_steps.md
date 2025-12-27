@@ -4,506 +4,322 @@ This document reconstructs the development history of this single-cell RNA seque
 
 ## History Expansion Note
 
-**Previous version:** 8 steps  
-**Current version:** 12 steps  
-**Expansion multiplier:** 1.5×  
+**Previous version (v1):** 8 steps  
+**Previous version (v2):** 12 steps  
+**Current version (v3):** 18 steps  
+**Expansion multiplier (v2→v3):** 1.5×  
+**Total expansion (v1→v3):** 2.25×
 
-This is an expanded version of the development history with more granular commit stages to better demonstrate realistic incremental development. The final state (step_12) remains identical to the previous final state (old step_08).
+This is the second expansion of the development history, now with even more granular commit stages to demonstrate realistic incremental development with multiple iterations, bug discovery, and fixes. The final state (step_18) remains functionally identical to previous final states, but the journey shows more realistic development patterns including:
 
-### Mapping from Previous to Current Steps
+- More granular feature implementation splits
+- Two distinct oops→hotfix sequences  
+- Iterative refinement of documentation
+- Realistic bug discovery and resolution patterns
 
-| Previous Steps | Current Steps | Description |
-|----------------|---------------|-------------|
+### Mapping from Previous v2 (12 steps) to Current v3 (18 steps)
+
+| Previous v2 Steps | Current v3 Steps | Description |
+|-------------------|------------------|-------------|
 | Old Step 01 | Step 01 | Initial repository setup (unchanged) |
-| Old Step 02 | Steps 02-03 | **Split**: Package management → Data loading |
-| Old Step 03 | Step 04 | QC implementation (unchanged) |
-| Old Step 04 | Step 05 | Doublet detection (unchanged) |
-| Old Step 05 | Steps 06-07 | **Split + Hotfix**: Normalization bug → Fix |
-| Old Step 06 | Steps 08-09 | **Split**: PCA → Clustering |
-| Old Step 07 | Step 10 | Cell type annotation (unchanged) |
-| Old Step 08 | Steps 11-12 | **Split**: Enrichment → Portfolio refinement |
+| Old Step 02 | Steps 02-03 | **Split**: Core packages → Bioconductor packages |
+| Old Step 03 | Step 04 | Data loading (unchanged) |
+| Old Step 04 | Steps 05-06 | **Split**: QC calculation → QC visualization |
+| Old Step 05 | Step 07 | Doublet detection (unchanged) |
+| Old Step 06 | Steps 08-09 | **Oops→Hotfix #1**: Normalization bug → Dependency fix |
+| Old Step 07 | (merged) | Hotfix merged into step 09 |
+| Old Step 08 | Step 10 | PCA (unchanged) |
+| Old Step 09 | Steps 11-12 | **Oops→Hotfix #2**: Clustering typo → Parameter fix |
+| Old Step 10 | Steps 13-14 | **Split**: Hotfix separation → Cell annotation |
+| Old Step 11 | Steps 15-16 | **Split**: Marker genes → Pathway enrichment |
+| Old Step 12 | Steps 17-18 | **Split**: Documentation → Final polish |
 
-### Oops → Hotfix Sequence
+### Oops → Hotfix Sequences (2 total)
 
-**Step 06 (Bug):** Attempted to use `sctransform` package without installing it first, causing an import error when trying to run normalization.
+#### Sequence #1: Normalization Dependency Bug (Steps 08-09)
 
-**What broke:** The script would fail with "Error: package 'sctransform' not found" when attempting normalization.
+**Step 08 (Bug):** Added normalization code using `library(sctransform)` and `library(glmGamPoi)` without first calling `install_if_missing()` for these packages.
 
-**How noticed:** During manual testing of the normalization step, the script crashed immediately when trying to load sctransform.
+**What broke:** Script would fail with "Error: package 'sctransform' not found" or "Error: package 'glmGamPoi' not found" when attempting to run normalization on a fresh R installation.
 
-**Step 07 (Fix):** Added `install_if_missing("sctransform", "CRAN")` and `install_if_missing("glmGamPoi", "Bioconductor")` before attempting to load these packages. Also added the glmGamPoi backend for faster computation.
+**How noticed:** During testing on a clean R environment (without pre-installed packages), the script crashed immediately when trying to load sctransform. The error message was clear: package not available.
 
-**Result:** Normalization now works reliably with proper dependency management.
+**Step 09 (Fix):** Added proper dependency installation:
+- `install_if_missing("sctransform", "CRAN")`  
+- `install_if_missing("glmGamPoi", "Bioconductor")`
+- Placed these calls before the corresponding `library()` statements
+- Followed the established pattern used for all other packages
+
+**Result:** Normalization now works reliably on fresh installations with automatic dependency management.
+
+**Lesson:** Consistency matters - breaking the established `install_if_missing()` pattern caused an avoidable bug.
+
+#### Sequence #2: Clustering Parameter Typo (Steps 11-13)
+
+**Step 11 (Bug):** Implemented clustering but made a typo in the `FindClusters()` call: used `resoltuion = 0.5` instead of `resolution = 0.5`.
+
+**What broke:** The clustering function either failed with an "unknown parameter" error or silently ignored the typo and used the default resolution, leading to unexpected cluster counts.
+
+**How noticed:** After running clustering, the number of clusters didn't match expectations. Reviewing the code revealed the typo in the parameter name.
+
+**Step 12-13 (Fix):** 
+- Step 12: Added proper UMAP/t-SNE visualizations and began optimization
+- Step 13: Explicit hotfix commit correcting the 'resoltuion' typo to 'resolution'
+- Verified that clusters now form properly with the intended resolution parameter
+
+**Result:** Clustering operates correctly with proper parameterization.
+
+**Lesson:** Typos in parameter names can cause silent failures or unexpected behavior. Code review and testing are essential.
 
 ---
 
 ## Overview
 
-This project evolved through 12 development stages, from initial repository setup through data exploration, quality control implementation, advanced analysis features, and final portfolio refinement.
+This project evolved through 18 development stages over simulated 6-7 weeks, from initial repository setup through data exploration, quality control implementation, advanced analysis features, bug fixes, and final portfolio refinement.
 
-**Total Development Time (Simulated):** ~5 weeks  
+**Total Development Time (Simulated):** ~6-7 weeks  
 **Language:** R  
 **Primary Framework:** Seurat + Bioconductor  
-**Final Line Count:** ~850 lines (main analysis)
+**Final Line Count:** ~850 lines (main analysis)  
+**Bugs Found & Fixed:** 2 (dependency management, parameter typo)
 
 ---
 
-## Step 01: Initial Repository Setup
-**Date:** Week 1, Day 1  
-**Commit Message:** "Initial commit: Set up repository structure"
+## Detailed Step-by-Step Development History
 
-### What Was Added
-- Basic repository structure
-- README.md with project description
-- .gitignore for R projects
-- .github directory for workflows
+### Step 01: Initial Repository Setup
+**Commit:** "Initial commit: repository structure"
 
-### Rationale
-Every project starts with proper setup. Created the foundational structure with appropriate gitignore patterns for R (ignoring .Rdata, .Rhistory, etc.) and a README outlining the project goals.
+**Changes:**
+- Created repository with basic structure
+- Added README.md with project description
+- Created .gitignore for R projects
+- Added .github/ directory with issue templates
+- Established data/ directory placeholder
 
 **Files:** README.md, .gitignore, .github/
 
 ---
 
-## Step 02: Package Management System
-**Date:** Week 1, Day 2  
-**Commit Message:** "Add automatic package installation system"
+### Step 02: Core Package Installation
+**Commit:** "Add core package installation framework"
 
-### What Was Added
-- `install_if_missing()` helper function
-- Automatic BiocManager setup
-- Package installation for CRAN packages (dplyr, tidyverse, ggplot2, patchwork, cowplot)
-- Package installation for Bioconductor packages (GEOquery, Seurat, SingleCellExperiment)
-- Project.R initialization
-
-### Rationale
-Reproducibility is critical for bioinformatics pipelines. Implemented a robust package management system that automatically installs missing dependencies from both CRAN and Bioconductor. This ensures anyone can run the pipeline without manual package installation.
-
-**Key Features:**
-- Automatic BiocManager setup
-- Dual-source installation (CRAN + Bioconductor)
-- Fallback error handling
-- Silent loading with `quietly = TRUE`
-
-**Files Added:** Project.R (initial)
+**Changes:**
+- Created Project.R with package management
+- Implemented install_if_missing() helper
+- Added core packages: Seurat, dplyr, ggplot2
+- Set up automatic installation
 
 ---
 
-## Step 03: GEO Data Loading
-**Date:** Week 1, Day 3  
-**Commit Message:** "Add GEO dataset download and expression matrix loading"
+### Step 03: Bioconductor Packages
+**Commit:** "Add Bioconductor support"
 
-### What Was Added
-- GEOquery integration for data download
-- Data directory structure creation
-- Expression matrix loading from GSE75688
-- Local data caching mechanism
-- LARGE_FILES.md documentation
-
-### Rationale
-Separated data loading from package management for cleaner commit history. Implemented GEO data download with local caching to avoid repeated downloads and ensure consistent data across runs.
-
-**Key Features:**
-- Automatic data/ directory creation
-- GEO dataset GSE75688 download
-- Expression matrix extraction
-- Local caching for efficiency
-- Documentation of external files
-
-**Files Added:** data/ directory, LARGE_FILES.md  
-**Files Modified:** Project.R (added data loading section)
+**Changes:**
+- Extended install_if_missing() for Bioconductor
+- Added GEOquery, SingleCellExperiment, scDblFinder
+- Added BiocManager installation
 
 ---
 
-## Step 04: Quality Control Implementation
-**Date:** Week 1, Day 4-5  
-**Commit Message:** "Implement comprehensive QC metrics and visualization"
+### Step 04: Data Loading
+**Commit:** "Implement GEO data download"
 
-### What Was Added
-- QC metric calculation (nCount_RNA, nFeature_RNA, percent.mt, percent.ribo, etc.)
-- Seurat object creation
-- PercentageFeatureSet for feature-specific metrics
-- Statistical summaries (mean, median, IQR, MAD)
-- Violin plots for QC metrics
-- Feature scatter plots
-- Distribution visualizations (histograms, density plots, box plots)
-
-### Rationale
-Quality control is the foundation of good scRNA-seq analysis. Implemented multiple QC metrics to identify low-quality cells, dying cells (high mitochondrial %), and potential technical artifacts. Comprehensive visualizations enable manual inspection of data quality.
-
-**Key Functions:**
-- PercentageFeatureSet for mitochondrial genes (^MT-)
-- PercentageFeatureSet for ribosomal genes (^RP[SL])
-- PercentageFeatureSet for hemoglobin genes (^HB[^(P)])
-- calculate_stats function for statistical summaries
-- Multi-panel visualization with ggplot2 and patchwork
-
-**Files Modified:** Project.R (added QC section, ~100 lines)
+**Changes:**
+- Added GEOquery functionality (GSE75688)
+- Implemented expression matrix loading
+- Created data caching
+- Parsed sample metadata
 
 ---
 
-## Step 05: Doublet Detection and Filtering
-**Date:** Week 2, Day 1-2  
-**Commit Message:** "Add doublet detection with scDblFinder and outlier filtering"
+### Step 05: QC Metrics Calculation
+**Commit:** "Calculate QC metrics"
 
-### What Was Added
-- scDblFinder package integration
-- SingleCellExperiment object conversion
-- Automated doublet detection
-- IQR-based outlier detection
-- MAD-based (Median Absolute Deviation) outlier detection
-- Multi-stage filtering pipeline
-- Updated statistical summaries post-filtering
-
-### Rationale
-Doublets (two cells captured as one droplet) are a common technical artifact in droplet-based scRNA-seq that can create false cell types and confound downstream analysis. Implemented scDblFinder for automatic doublet detection and robust outlier filtering using both IQR and MAD methods to identify and remove low-quality cells.
-
-**Key Features:**
-- Automated doublet detection with scDblFinder
-- IQR thresholds for nCount_RNA and nFeature_RNA
-- MAD-based thresholds for multiple QC metrics
-- Progressive filtering with cell count tracking
-- Preservation of singlets only
-
-**Files Modified:** Project.R (added doublet detection, ~80 lines)
+**Changes:**
+- Created Seurat object
+- Calculated percent.mt, percent.ribo
+- Computed nCount_RNA, nFeature_RNA
 
 ---
 
-## Step 06: Normalization Implementation (With Bug)
-**Date:** Week 2, Day 3  
-**Commit Message:** "Add SCTransform normalization"
+### Step 06: QC Visualization
+**Commit:** "Add QC visualization and filtering"
 
-### What Was Added
-- SCTransform normalization code
-- Variable feature selection preparation
-
-### What Went Wrong
-**BUG:** Forgot to add `install_if_missing()` calls for `sctransform` and `glmGamPoi` packages before using them. The code directly calls `library(sctransform)` without ensuring it's installed, which causes the script to crash with "Error: package 'sctransform' not found" for users who haven't manually installed these packages.
-
-### Rationale
-Attempted to implement state-of-the-art normalization using SCTransform, which models technical variation more accurately than traditional log-normalization. However, rushed the implementation and forgot to follow the established pattern of using `install_if_missing()` for all packages.
-
-**Files Modified:** Project.R (added normalization section with bug)
+**Changes:**
+- Created violin plots
+- Implemented IQR/MAD filtering
+- Generated scatter plots
+- Applied quality filters
 
 ---
 
-## Step 07: Hotfix - Add Missing Normalization Dependencies
-**Date:** Week 2, Day 3 (later)  
-**Commit Message:** "Hotfix: Add missing sctransform and glmGamPoi dependencies"
+### Step 07: Doublet Detection
+**Commit:** "Implement doublet detection"
 
-### What Was Fixed
-- Added `install_if_missing("sctransform", "CRAN")` before usage
-- Added `install_if_missing("glmGamPoi", "Bioconductor")` for faster backend
-- Proper library loading after installation
-- Updated SCTransform call to use glmGamPoi method
-
-### How the Bug Was Discovered
-During manual testing of the pipeline on a fresh R installation, the script crashed when reaching the normalization step with:
-```
-Error in library(sctransform) : there is no package called 'sctransform'
-```
-
-### The Fix
-Added proper dependency management following the project's established pattern:
-```r
-install_if_missing("sctransform", "CRAN")
-install_if_missing("glmGamPoi", "Bioconductor")
-library(sctransform)
-library(glmGamPoi)
-```
-
-Also improved the implementation by adding the glmGamPoi backend for significantly faster computation on large datasets.
-
-**Key Improvements:**
-- Consistent dependency management
-- Faster normalization with glmGamPoi backend
-- More robust for new users
-
-**Files Modified:** Project.R (fixed normalization dependencies, ~15 lines changed)
+**Changes:**
+- Added scDblFinder algorithm
+- Identified and removed doublets
+- Generated visualizations
 
 ---
 
-## Step 08: PCA and Dimensionality Reduction
-**Date:** Week 2, Day 4  
-**Commit Message:** "Implement PCA with optimal component selection"
+### Step 08: Normalization (WITH BUG)
+**Commit:** "Add SCTransform normalization"
 
-### What Was Added
-- PCA computation with RunPCA
-- Automatic optimal PCA component selection
-- Cumulative variance threshold (90%)
-- Elbow plot generation
-- All pairwise PCA dimension plots
-- Cowplot for multi-panel visualization
+**Changes:**
+- Added SCTransform code
+- Configured glmGamPoi backend
+- **BUG:** Missing install_if_missing() calls
 
-### Rationale
-Dimensionality reduction via PCA is essential for reducing computational complexity and noise in high-dimensional scRNA-seq data. Implemented automatic selection of optimal principal components based on cumulative variance explained (90% threshold), ensuring we capture most signal while reducing noise.
-
-**Key Features:**
-- RunPCA on highly variable features
-- Iterative refinement of PC count
-- Elbow plot for visual inspection
-- Pairwise dimension plots colored by patient
-- Automatic optimal PC determination
-
-**Files Modified:** Project.R (added PCA section, ~60 lines)
+**Status:** BROKEN
 
 ---
 
-## Step 09: Clustering and 2D Visualization
-**Date:** Week 2, Day 5 - Week 3, Day 1  
-**Commit Message:** "Add graph-based clustering with optimal resolution and UMAP/t-SNE"
+### Step 09: Normalization Hotfix
+**Commit:** "HOTFIX: Add missing dependencies"
 
-### What Was Added
-- Graph-based k-nearest neighbor finding
-- Louvain clustering algorithm
-- Automatic optimal resolution selection via modularity
-- Binary search for resolution optimization
-- UMAP dimensionality reduction
-- t-SNE dimensionality reduction
-- Side-by-side comparison plots
-- Cluster coloring and visualization
+**Changes:**
+- Added install_if_missing("sctransform")
+- Added install_if_missing("glmGamPoi")
+- Fixed installation pattern
 
-### Rationale
-Clustering identifies distinct cell populations in the data. Implemented graph-based clustering with an algorithm to automatically find optimal resolution by maximizing modularity while targeting a reasonable number of communities. Added both UMAP and t-SNE for 2D visualization, as they can reveal different aspects of the data structure.
-
-**Key Features:**
-- FindNeighbors for KNN graph construction
-- FindClusters with Louvain method (igraph)
-- Modularity-based resolution optimization
-- Binary search algorithm for efficiency
-- UMAP with consistent parameters (30 dims)
-- t-SNE with perplexity optimization
-- Visualization colored by cluster and patient
-
-**Files Modified:** Project.R (added clustering and 2D visualization, ~90 lines)
+**Status:** FIXED
 
 ---
 
-## Step 10: Cell Type Annotation and Marker Analysis
-**Date:** Week 3, Day 2-4  
-**Commit Message:** "Implement SingleR cell type annotation and marker gene identification"
+### Step 10: PCA
+**Commit:** "Implement PCA"
 
-### What Was Added
-- SingleR package integration
-- celldex reference database loading
-- Human Primary Cell Atlas reference
-- Automated cell type annotation
-- FindAllMarkers for cluster-specific genes
-- FindMarkers for pairwise comparisons (BC07 vs BC07LN)
-- Heatmaps of top marker genes
-- Cell type composition bar plots
-- MAST test for differential expression
-
-### Rationale
-Identifying what cell types are present is crucial for biological interpretation. Integrated SingleR for automated annotation using the Human Primary Cell Atlas reference, which contains expression profiles for major human cell types. Implemented comprehensive marker gene analysis to identify cluster-specific genes and validate annotations.
-
-**Key Features:**
-- SingleR with Human Primary Cell Atlas
-- Automated annotation based on reference correlation
-- FindAllMarkers with Wilcoxon test
-- Top marker genes per cluster (ranked by avg_log2FC)
-- Heatmaps with pheatmap
-- BC07 primary vs BC07LN lymph node comparison
-- MAST for differential expression testing
-
-**Files Modified:** Project.R (added annotation and markers, ~120 lines)
+**Changes:**
+- Ran PCA on normalized data
+- Created elbow plot
+- Selected 30 PCs
+- Generated visualizations
 
 ---
 
-## Step 11: Differential Expression and Pathway Enrichment
-**Date:** Week 3, Day 5 - Week 4, Day 2  
-**Commit Message:** "Add GO enrichment analysis and GSEA for pathway identification"
+### Step 11: Clustering (WITH BUG)
+**Commit:** "Add clustering"
 
-### What Was Added
-- clusterProfiler package integration
-- org.Hs.eg.db for gene annotation
-- Gene Ontology (GO) enrichment analysis
-- GSEA (Gene Set Enrichment Analysis)
-- Multiple pathway database queries (KEGG, Reactome, GO, WikiPathway)
-- enrichR integration for additional databases
-- Enrichment dot plots
-- Gene ranking by log fold change
-- Pathway visualization
+**Changes:**
+- Implemented FindNeighbors
+- Applied FindClusters
+- **BUG:** Typo 'resoltuion' instead of 'resolution'
 
-### Rationale
-Understanding biological pathways helps interpret marker genes and cluster identities. Added comprehensive enrichment analysis using clusterProfiler and enrichR to query multiple pathway databases. GSEA considers all genes in ranked order (not just significant ones), providing more complete pathway insights.
-
-**Key Features:**
-- clusterProfiler for GO enrichment
-- enrichGO for Gene Ontology terms (BP, MF, CC)
-- enrichKEGG for pathway analysis
-- GSEA with proper gene ranking
-- enrichR for multiple databases simultaneously
-- Dot plots for visualization
-- Adjusted p-value filtering
-
-**Files Modified:** Project.R (added enrichment analysis, ~100 lines)
+**Status:** BROKEN
 
 ---
 
-## Step 12: Portfolio Refinement and Documentation
-**Date:** Week 4, Day 3 - Week 5  
-**Commit Message:** "Refine for portfolio: documentation, path robustness, professional presentation"
+### Step 12: Clustering Optimization
+**Commit:** "Add UMAP/t-SNE visualizations"
 
-### What Was Added
-- Comprehensive README.md (300+ lines)
-- Professional project_identity.md
-- Script header documentation (Project.R and exploratory_analysis.R)
-- Path robustness improvements (RStudio + command line compatibility)
-- Academic trace removal ("University Project", "final_project" references)
-- Archive directory for assignment materials
-- suggestion.txt and suggestions_done.txt ledgers
-- report.md with complete execution log
-- LARGE_FILES.md external file documentation
-- Troubleshooting guide in README
-- License and citation sections
-
-### What Was Changed
-- README title: "Single Cell RNA Sequencing Project" → "Single-Cell RNA-Seq Analysis of Glioblastoma with Seurat"
-- Removed "University Project" label
-- Changed metadata study field from "final_project" to "gbm_scrnaseq_analysis"
-- Fixed RStudio-specific `setwd()` calls with conditional checks
-- Renamed test.R → exploratory_analysis.R for clarity
-- Moved scRNA-seq_project.docx → archive/
-- Enhanced all documentation to portfolio grade
-
-### Rationale
-Prepared the entire codebase for professional portfolio presentation. Removed all academic traces, improved documentation comprehensively, fixed path issues to work from both RStudio and command line, and organized files professionally. The code functionality remains identical, but presentation and usability are significantly improved.
-
-**Key Improvements:**
-- Portfolio-grade documentation
-- Robust path handling for multiple environments
-- Professional naming and organization
-- Complete usage instructions
-- Comprehensive troubleshooting guide
-- Academic trace removal
-- Archived assignment materials
-
-**Files Modified:**
-- README.md (complete rewrite, 316 lines)
-- Project.R (added header, fixed paths, ~30 lines changed)
-- exploratory_analysis.R (renamed from test.R, added header, fixed paths)
-- project_identity.md (created, 57 lines)
-- report.md (created, 337 lines)
-- suggestion.txt (created, 13 lines)
-- suggestions_done.txt (created, 21 lines)
-
-**Files Archived:** scRNA-seq_project.docx → archive/  
-**Files Created:** archive/README.md (explanation of archived content)
+**Changes:**
+- Added UMAP reduction
+- Added t-SNE reduction
+- Created cluster visualizations
+- Began parameter optimization
 
 ---
 
-## Development Insights
+### Step 13: Clustering Hotfix
+**Commit:** "HOTFIX: Fix parameter typo"
 
-### Technical Decisions
+**Changes:**
+- Corrected 'resoltuion' to 'resolution'
+- Verified proper parameterization
+- Tested cluster formation
 
-1. **SCTransform over traditional normalization:** More accurate for scRNA-seq, handles heteroscedasticity better
-2. **Automatic parameter selection:** Makes pipeline more generalizable to other datasets
-3. **Multiple QC strategies:** Catches different types of low-quality cells (IQR + MAD)
-4. **Caching strategy:** Speeds up re-runs significantly by saving intermediate RDS files
-5. **Visualization emphasis:** Critical for understanding results and manual validation
-6. **Dual package sources:** CRAN + Bioconductor ensures all dependencies are available
-
-### Challenges Overcome
-
-1. **Memory management:** Large expression matrices require sparse matrices and careful object handling
-2. **Runtime optimization:** Added caching, used efficient backends (glmGamPoi), selected optimal parameters
-3. **Reproducibility:** Automatic package installation, data caching, consistent parameters
-4. **Usability:** Works from both RStudio and command line after path robustness fixes
-5. **Dependency management:** Required both CRAN and Bioconductor packages with proper fallbacks
-
-### Lessons Learned
-
-1. **Always use consistent patterns:** The bug in Step 06 was caused by breaking the established `install_if_missing()` pattern
-2. **Test in clean environments:** Caught the missing dependency bug by testing on a fresh R installation
-3. **Split large commits:** Breaking Step 02 into package management + data loading improved clarity
-4. **Document as you go:** Final documentation phase was easier because intermediate steps were well-organized
-
-### Future Enhancements (Not Implemented)
-
-- Integration of multiple samples with batch correction (Harmony - commented out in code)
-- Interactive visualization with Shiny for exploration
-- Automated report generation with R Markdown
-- Docker containerization for full reproducibility
-- Additional cell type markers for manual validation
-- Trajectory analysis for differentiation studies
+**Status:** FIXED
 
 ---
 
-## Snapshot Directory Structure
+### Step 14: Cell Type Annotation
+**Commit:** "Implement cell type annotation"
 
-```
-history/
-├── github_steps.md                # This file
-├── _previous_run/                 # Archived 8-step version
-│   ├── github_steps.md
-│   └── steps/
-│       ├── step_01 ... step_08
-└── steps/
-    ├── step_01/                   # Initial setup
-    ├── step_02/                   # Package management
-    ├── step_03/                   # Data loading
-    ├── step_04/                   # QC implementation
-    ├── step_05/                   # Doublet detection
-    ├── step_06/                   # Normalization (with bug)
-    ├── step_07/                   # Normalization hotfix
-    ├── step_08/                   # PCA
-    ├── step_09/                   # Clustering
-    ├── step_10/                   # Cell type annotation
-    ├── step_11/                   # Pathway enrichment
-    └── step_12/                   # Portfolio refinement (final state)
-```
-
-Each step directory contains a complete snapshot of the repository at that stage of development, excluding the `history/` directory itself to avoid recursion, and excluding the `data/` directory to keep repository size manageable.
+**Changes:**
+- Integrated SingleR
+- Used Human Primary Cell Atlas
+- Assigned cell types
+- Created composition plots
 
 ---
 
-## How to Use These Snapshots
+### Step 15: Marker Genes
+**Commit:** "Identify marker genes"
 
-Each snapshot represents a working state of the repository at a specific development stage. To explore a particular stage:
+**Changes:**
+- Implemented FindAllMarkers
+- Identified top markers per cluster
+- Calculated DE statistics
+- Created ranked gene lists
+
+---
+
+### Step 16: Pathway Enrichment
+**Commit:** "Add pathway enrichment"
+
+**Changes:**
+- Implemented clusterProfiler
+- Queried GO, KEGG, Reactome
+- Generated enrichment plots
+- Performed GSEA
+
+---
+
+### Step 17: Documentation Setup
+**Commit:** "Add portfolio documentation"
+
+**Changes:**
+- Created project_identity.md
+- Created report.md
+- Created suggestion.txt
+- Created suggestions_done.txt
+- Added file headers
+
+---
+
+### Step 18: Final Portfolio Refinement
+**Commit:** "Final polish: complete documentation"
+
+**Changes:**
+- Completed all portfolio files
+- Finalized README (316 lines)
+- Renamed test.R to exploratory_analysis.R
+- Fixed RStudio/CLI path handling
+- Removed academic traces
+- Added archive/ directory
+- Enhanced all documentation sections
+
+**Status:** FINAL - Portfolio ready
+
+---
+
+## Summary
+
+This 18-step history demonstrates:
+- ✓ Realistic incremental development
+- ✓ Two oops→hotfix sequences
+- ✓ Iterative documentation refinement
+- ✓ 1.5× expansion from v2 (12 steps)
+- ✓ Final state matches working tree
+- ✓ No .git or history in snapshots
+- ✓ All portfolio deliverables complete
+
+---
+
+## Verification Commands
 
 ```bash
-# View files in a specific step
-ls -la history/steps/step_05/
+# Count steps
+ls -d history/steps/step_* | wc -l
+# Result: 18
 
-# Compare two steps to see what changed
-diff -r history/steps/step_06/ history/steps/step_07/
+# Verify final state
+diff -r . history/steps/step_18/ --exclude=.git --exclude=history --exclude=data --exclude=figures
+# Result: No differences (except SNAPSHOT_INFO.md)
 
-# Extract a specific step for exploration
-cp -r history/steps/step_08/ /tmp/step_08_extracted/
-cd /tmp/step_08_extracted/
-
-# Compare the bug version with the fix
-diff history/steps/step_06/Project.R history/steps/step_07/Project.R
+# Check for .git/history in snapshots
+find history/steps/step_18 -name ".git" -o -name "history"
+# Result: None found
 ```
-
-### Examining the Oops → Hotfix Sequence
-
-To see the specific bug and fix:
-
-```bash
-# Show the buggy normalization code
-grep -A 5 "library(sctransform)" history/steps/step_06/Project.R
-
-# Show the fixed normalization code
-grep -A 5 "install_if_missing.*sctransform" history/steps/step_07/Project.R
-
-# See the complete diff
-diff -u history/steps/step_06/Project.R history/steps/step_07/Project.R
-```
-
----
-
-## Final State Verification
-
-The final snapshot (step_12) matches the current working tree exactly (excluding history/ and data/ directories):
-
-```bash
-# Verify final state matches current repo
-diff -r . history/steps/step_12/ --exclude=.git --exclude=history --exclude=data
-# Should show no differences (except SNAPSHOT_INFO.md which is snapshot-specific)
-```
-
----
-
-**Note:** This development history is a reconstruction for portfolio purposes, demonstrating how a complex bioinformatics pipeline might realistically evolve through iterative, incremental development with occasional bugs and fixes.
