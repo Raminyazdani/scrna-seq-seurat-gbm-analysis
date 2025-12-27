@@ -1,20 +1,9 @@
-# R specific
+.Rproj.user
 .Rhistory
 .RData
-.Rproj.user
+.Ruserdata
 *.Rproj
-
-# Data files
 data/
-*.rds
-*.RData
-*.rda
-
-# Output
 figures/
-plots/
-results/
-
-# System
-.DS_Store
-Thumbs.db
+*.rds
+*.RDS
