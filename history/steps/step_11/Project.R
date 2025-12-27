@@ -97,48 +97,9 @@ message("Normalization complete with proper dependencies")
 
 message("PCA analysis complete")
 
-# Graph-based clustering
-# seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
-# seurat_obj <- FindClusters(seurat_obj, resolution = 0.5)
+# Clustering implementation
+seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
+# BUG: Using wrong parameter name 'resoltuion' instead of 'resolution'
+seurat_obj <- FindClusters(seurat_obj, resoltuion = 0.5)  # TYPO!
 
-# UMAP and t-SNE visualization
-# seurat_obj <- RunUMAP(seurat_obj, dims = 1:30)
-# seurat_obj <- RunTSNE(seurat_obj, dims = 1:30)
-
-message("Clustering and 2D visualization complete")
-
-# Cell type annotation with SingleR
-install_if_missing("SingleR", "Bioconductor")
-install_if_missing("celldex", "Bioconductor")
-
-library(SingleR)
-library(celldex)
-
-# Get reference dataset
-# ref <- celldex::HumanPrimaryCellAtlasData()
-
-# Annotate cell types
-# predictions <- SingleR(test = as.SingleCellExperiment(seurat_obj), 
-#                        ref = ref, labels = ref$label.main)
-
-message("Cell type annotation complete")
-
-# Differential expression analysis
-# markers <- FindAllMarkers(seurat_obj, only.pos = TRUE, min.pct = 0.25)
-
-# Pathway enrichment with clusterProfiler
-install_if_missing("clusterProfiler", "Bioconductor")
-install_if_missing("org.Hs.eg.db", "Bioconductor")
-install_if_missing("enrichplot", "Bioconductor")
-
-library(clusterProfiler)
-library(org.Hs.eg.db)
-library(enrichplot)
-
-# Gene Ontology enrichment
-# ego <- enrichGO(gene = marker_genes,
-#                 OrgDb = org.Hs.eg.db,
-#                 keyType = 'SYMBOL',
-#                 ont = "BP")
-
-message("Differential expression and pathway enrichment complete")
+message("Clustering complete")

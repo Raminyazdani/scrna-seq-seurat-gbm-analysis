@@ -73,26 +73,12 @@ library(SingleCellExperiment)
 message("Doublet detection complete")
 
 # Normalization with SCTransform
-# OOPS: Forgot to install sctransform package!
-library(sctransform)  # This will fail if not installed
+# BUG: Attempting to use sctransform without installing it first
+library(sctransform)  # This will fail if package not installed!
+library(glmGamPoi)    # This will also fail!
 
-# Normalization with SCTransform - FIXED
-# Install sctransform if missing
-install_if_missing("sctransform", "CRAN")
-install_if_missing("glmGamPoi", "Bioconductor")
+seurat_obj <- SCTransform(seurat_obj, method = "glmGamPoi", 
+                          vars.to.regress = "percent.mt", 
+                          verbose = FALSE)
 
-library(sctransform)
-library(glmGamPoi)
-
-# SCTransform normalization with glmGamPoi backend
-# seurat_obj <- SCTransform(seurat_obj, method = "glmGamPoi", verbose = FALSE)
-
-message("Normalization complete with proper dependencies")
-
-# PCA Computation
-# seurat_obj <- RunPCA(seurat_obj, features = VariableFeatures(object = seurat_obj))
-
-# Determine optimal number of PCs
-# ElbowPlot(seurat_obj, ndims = 50)
-
-message("PCA analysis complete")
+message("Normalization complete")

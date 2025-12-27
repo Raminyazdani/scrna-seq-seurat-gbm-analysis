@@ -1,6 +1,12 @@
-# Snapshot Information
-Step: 12
-Date: 2025-12-26
+# Snapshot Info: Step 12
 
-This snapshot represents the final portfolio-ready state of the repository.
-All academic traces removed, documentation complete, and paths made robust.
+**Commit:** Clustering parameter optimization (contains HOTFIX)
+
+**Changes:**
+- **HOTFIX:** Fixed 'resoltuion' typo to 'resolution'
+- Added UMAP and t-SNE visualizations
+- Implemented clustering resolution optimization
+- Created cluster visualization plots
+
+**Status:** FIXED - Clustering with proper parameter settings
+**Fix for:** Step 11 bug - parameter typo in FindClusters
